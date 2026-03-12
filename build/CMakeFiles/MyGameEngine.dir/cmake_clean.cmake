@@ -1,0 +1,17 @@
+file(REMOVE_RECURSE
+  "CMakeFiles/MyGameEngine.dir/src/application/application.cpp.o"
+  "CMakeFiles/MyGameEngine.dir/src/application/application.cpp.o.d"
+  "CMakeFiles/MyGameEngine.dir/src/logger/logger.cpp.o"
+  "CMakeFiles/MyGameEngine.dir/src/logger/logger.cpp.o.d"
+  "CMakeFiles/MyGameEngine.dir/src/main.cpp.o"
+  "CMakeFiles/MyGameEngine.dir/src/main.cpp.o.d"
+  "CMakeFiles/MyGameEngine.dir/src/utils/gl.c.o"
+  "CMakeFiles/MyGameEngine.dir/src/utils/gl.c.o.d"
+  "MyGameEngine"
+  "MyGameEngine.pdb"
+)
+
+# Per-language clean rules from dependency scanning.
+foreach(lang C CXX)
+  include(CMakeFiles/MyGameEngine.dir/cmake_clean_${lang}.cmake OPTIONAL)
+endforeach()
