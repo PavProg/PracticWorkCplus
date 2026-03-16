@@ -128,12 +128,57 @@ CMakeFiles/MyGameEngine.dir/src/logger/logger.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/MyGameEngine.dir/src/logger/logger.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/pavel/Desktop/WorkingProject/CplusWorks/AID/Practice1/src/logger/logger.cpp -o CMakeFiles/MyGameEngine.dir/src/logger/logger.cpp.s
 
+CMakeFiles/MyGameEngine.dir/src/states/MenuState.cpp.o: CMakeFiles/MyGameEngine.dir/flags.make
+CMakeFiles/MyGameEngine.dir/src/states/MenuState.cpp.o: /Users/pavel/Desktop/WorkingProject/CplusWorks/AID/Practice1/src/states/MenuState.cpp
+CMakeFiles/MyGameEngine.dir/src/states/MenuState.cpp.o: CMakeFiles/MyGameEngine.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/pavel/Desktop/WorkingProject/CplusWorks/AID/Practice1/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/MyGameEngine.dir/src/states/MenuState.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/MyGameEngine.dir/src/states/MenuState.cpp.o -MF CMakeFiles/MyGameEngine.dir/src/states/MenuState.cpp.o.d -o CMakeFiles/MyGameEngine.dir/src/states/MenuState.cpp.o -c /Users/pavel/Desktop/WorkingProject/CplusWorks/AID/Practice1/src/states/MenuState.cpp
+
+CMakeFiles/MyGameEngine.dir/src/states/MenuState.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/MyGameEngine.dir/src/states/MenuState.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/pavel/Desktop/WorkingProject/CplusWorks/AID/Practice1/src/states/MenuState.cpp > CMakeFiles/MyGameEngine.dir/src/states/MenuState.cpp.i
+
+CMakeFiles/MyGameEngine.dir/src/states/MenuState.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/MyGameEngine.dir/src/states/MenuState.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/pavel/Desktop/WorkingProject/CplusWorks/AID/Practice1/src/states/MenuState.cpp -o CMakeFiles/MyGameEngine.dir/src/states/MenuState.cpp.s
+
+CMakeFiles/MyGameEngine.dir/src/states/PlayState.cpp.o: CMakeFiles/MyGameEngine.dir/flags.make
+CMakeFiles/MyGameEngine.dir/src/states/PlayState.cpp.o: /Users/pavel/Desktop/WorkingProject/CplusWorks/AID/Practice1/src/states/PlayState.cpp
+CMakeFiles/MyGameEngine.dir/src/states/PlayState.cpp.o: CMakeFiles/MyGameEngine.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/pavel/Desktop/WorkingProject/CplusWorks/AID/Practice1/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/MyGameEngine.dir/src/states/PlayState.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/MyGameEngine.dir/src/states/PlayState.cpp.o -MF CMakeFiles/MyGameEngine.dir/src/states/PlayState.cpp.o.d -o CMakeFiles/MyGameEngine.dir/src/states/PlayState.cpp.o -c /Users/pavel/Desktop/WorkingProject/CplusWorks/AID/Practice1/src/states/PlayState.cpp
+
+CMakeFiles/MyGameEngine.dir/src/states/PlayState.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/MyGameEngine.dir/src/states/PlayState.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/pavel/Desktop/WorkingProject/CplusWorks/AID/Practice1/src/states/PlayState.cpp > CMakeFiles/MyGameEngine.dir/src/states/PlayState.cpp.i
+
+CMakeFiles/MyGameEngine.dir/src/states/PlayState.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/MyGameEngine.dir/src/states/PlayState.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/pavel/Desktop/WorkingProject/CplusWorks/AID/Practice1/src/states/PlayState.cpp -o CMakeFiles/MyGameEngine.dir/src/states/PlayState.cpp.s
+
+CMakeFiles/MyGameEngine.dir/src/states/StateManager.cpp.o: CMakeFiles/MyGameEngine.dir/flags.make
+CMakeFiles/MyGameEngine.dir/src/states/StateManager.cpp.o: /Users/pavel/Desktop/WorkingProject/CplusWorks/AID/Practice1/src/states/StateManager.cpp
+CMakeFiles/MyGameEngine.dir/src/states/StateManager.cpp.o: CMakeFiles/MyGameEngine.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/pavel/Desktop/WorkingProject/CplusWorks/AID/Practice1/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/MyGameEngine.dir/src/states/StateManager.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/MyGameEngine.dir/src/states/StateManager.cpp.o -MF CMakeFiles/MyGameEngine.dir/src/states/StateManager.cpp.o.d -o CMakeFiles/MyGameEngine.dir/src/states/StateManager.cpp.o -c /Users/pavel/Desktop/WorkingProject/CplusWorks/AID/Practice1/src/states/StateManager.cpp
+
+CMakeFiles/MyGameEngine.dir/src/states/StateManager.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/MyGameEngine.dir/src/states/StateManager.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/pavel/Desktop/WorkingProject/CplusWorks/AID/Practice1/src/states/StateManager.cpp > CMakeFiles/MyGameEngine.dir/src/states/StateManager.cpp.i
+
+CMakeFiles/MyGameEngine.dir/src/states/StateManager.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/MyGameEngine.dir/src/states/StateManager.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/pavel/Desktop/WorkingProject/CplusWorks/AID/Practice1/src/states/StateManager.cpp -o CMakeFiles/MyGameEngine.dir/src/states/StateManager.cpp.s
+
 # Object files for target MyGameEngine
 MyGameEngine_OBJECTS = \
 "CMakeFiles/MyGameEngine.dir/src/main.cpp.o" \
 "CMakeFiles/MyGameEngine.dir/src/application/application.cpp.o" \
 "CMakeFiles/MyGameEngine.dir/src/utils/gl.c.o" \
-"CMakeFiles/MyGameEngine.dir/src/logger/logger.cpp.o"
+"CMakeFiles/MyGameEngine.dir/src/logger/logger.cpp.o" \
+"CMakeFiles/MyGameEngine.dir/src/states/MenuState.cpp.o" \
+"CMakeFiles/MyGameEngine.dir/src/states/PlayState.cpp.o" \
+"CMakeFiles/MyGameEngine.dir/src/states/StateManager.cpp.o"
 
 # External object files for target MyGameEngine
 MyGameEngine_EXTERNAL_OBJECTS =
@@ -142,9 +187,12 @@ MyGameEngine: CMakeFiles/MyGameEngine.dir/src/main.cpp.o
 MyGameEngine: CMakeFiles/MyGameEngine.dir/src/application/application.cpp.o
 MyGameEngine: CMakeFiles/MyGameEngine.dir/src/utils/gl.c.o
 MyGameEngine: CMakeFiles/MyGameEngine.dir/src/logger/logger.cpp.o
+MyGameEngine: CMakeFiles/MyGameEngine.dir/src/states/MenuState.cpp.o
+MyGameEngine: CMakeFiles/MyGameEngine.dir/src/states/PlayState.cpp.o
+MyGameEngine: CMakeFiles/MyGameEngine.dir/src/states/StateManager.cpp.o
 MyGameEngine: CMakeFiles/MyGameEngine.dir/build.make
 MyGameEngine: CMakeFiles/MyGameEngine.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/pavel/Desktop/WorkingProject/CplusWorks/AID/Practice1/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking CXX executable MyGameEngine"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/pavel/Desktop/WorkingProject/CplusWorks/AID/Practice1/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Linking CXX executable MyGameEngine"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/MyGameEngine.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

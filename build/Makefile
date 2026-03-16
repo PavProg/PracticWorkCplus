@@ -201,6 +201,78 @@ src/main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyGameEngine.dir/build.make CMakeFiles/MyGameEngine.dir/src/main.cpp.s
 .PHONY : src/main.cpp.s
 
+src/states/MenuState.o: src/states/MenuState.cpp.o
+.PHONY : src/states/MenuState.o
+
+# target to build an object file
+src/states/MenuState.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyGameEngine.dir/build.make CMakeFiles/MyGameEngine.dir/src/states/MenuState.cpp.o
+.PHONY : src/states/MenuState.cpp.o
+
+src/states/MenuState.i: src/states/MenuState.cpp.i
+.PHONY : src/states/MenuState.i
+
+# target to preprocess a source file
+src/states/MenuState.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyGameEngine.dir/build.make CMakeFiles/MyGameEngine.dir/src/states/MenuState.cpp.i
+.PHONY : src/states/MenuState.cpp.i
+
+src/states/MenuState.s: src/states/MenuState.cpp.s
+.PHONY : src/states/MenuState.s
+
+# target to generate assembly for a file
+src/states/MenuState.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyGameEngine.dir/build.make CMakeFiles/MyGameEngine.dir/src/states/MenuState.cpp.s
+.PHONY : src/states/MenuState.cpp.s
+
+src/states/PlayState.o: src/states/PlayState.cpp.o
+.PHONY : src/states/PlayState.o
+
+# target to build an object file
+src/states/PlayState.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyGameEngine.dir/build.make CMakeFiles/MyGameEngine.dir/src/states/PlayState.cpp.o
+.PHONY : src/states/PlayState.cpp.o
+
+src/states/PlayState.i: src/states/PlayState.cpp.i
+.PHONY : src/states/PlayState.i
+
+# target to preprocess a source file
+src/states/PlayState.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyGameEngine.dir/build.make CMakeFiles/MyGameEngine.dir/src/states/PlayState.cpp.i
+.PHONY : src/states/PlayState.cpp.i
+
+src/states/PlayState.s: src/states/PlayState.cpp.s
+.PHONY : src/states/PlayState.s
+
+# target to generate assembly for a file
+src/states/PlayState.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyGameEngine.dir/build.make CMakeFiles/MyGameEngine.dir/src/states/PlayState.cpp.s
+.PHONY : src/states/PlayState.cpp.s
+
+src/states/StateManager.o: src/states/StateManager.cpp.o
+.PHONY : src/states/StateManager.o
+
+# target to build an object file
+src/states/StateManager.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyGameEngine.dir/build.make CMakeFiles/MyGameEngine.dir/src/states/StateManager.cpp.o
+.PHONY : src/states/StateManager.cpp.o
+
+src/states/StateManager.i: src/states/StateManager.cpp.i
+.PHONY : src/states/StateManager.i
+
+# target to preprocess a source file
+src/states/StateManager.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyGameEngine.dir/build.make CMakeFiles/MyGameEngine.dir/src/states/StateManager.cpp.i
+.PHONY : src/states/StateManager.cpp.i
+
+src/states/StateManager.s: src/states/StateManager.cpp.s
+.PHONY : src/states/StateManager.s
+
+# target to generate assembly for a file
+src/states/StateManager.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyGameEngine.dir/build.make CMakeFiles/MyGameEngine.dir/src/states/StateManager.cpp.s
+.PHONY : src/states/StateManager.cpp.s
+
 src/utils/gl.o: src/utils/gl.c.o
 .PHONY : src/utils/gl.o
 
@@ -243,6 +315,15 @@ help:
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
+	@echo "... src/states/MenuState.o"
+	@echo "... src/states/MenuState.i"
+	@echo "... src/states/MenuState.s"
+	@echo "... src/states/PlayState.o"
+	@echo "... src/states/PlayState.i"
+	@echo "... src/states/PlayState.s"
+	@echo "... src/states/StateManager.o"
+	@echo "... src/states/StateManager.i"
+	@echo "... src/states/StateManager.s"
 	@echo "... src/utils/gl.o"
 	@echo "... src/utils/gl.i"
 	@echo "... src/utils/gl.s"
