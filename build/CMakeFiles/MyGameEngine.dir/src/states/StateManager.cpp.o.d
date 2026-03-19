@@ -483,6 +483,7 @@ CMakeFiles/MyGameEngine.dir/src/states/StateManager.cpp.o: \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__iterator/unreachable_sentinel.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__iterator/wrap_iter.h \
   /Users/pavel/Desktop/WorkingProject/CplusWorks/AID/Practice1/src/states/GameState.hpp \
+  /Users/pavel/Desktop/WorkingProject/CplusWorks/AID/Practice1/src/render/IRenderAdapter.hpp \
   /Users/pavel/Desktop/WorkingProject/CplusWorks/AID/Practice1/src/logger/logger.hpp \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/string \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/max.h \

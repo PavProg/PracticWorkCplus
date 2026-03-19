@@ -1,6 +1,6 @@
-CMakeFiles/MyGameEngine.dir/src/states/MenuState.cpp.o: \
-  /Users/pavel/Desktop/WorkingProject/CplusWorks/AID/Practice1/src/states/MenuState.cpp \
-  /Users/pavel/Desktop/WorkingProject/CplusWorks/AID/Practice1/src/states/MenuState.hpp \
+CMakeFiles/MyGameEngine.dir/src/states/PauseState.cpp.o: \
+  /Users/pavel/Desktop/WorkingProject/CplusWorks/AID/Practice1/src/states/PauseState.cpp \
+  /Users/pavel/Desktop/WorkingProject/CplusWorks/AID/Practice1/src/states/PauseState.hpp \
   /Users/pavel/Desktop/WorkingProject/CplusWorks/AID/Practice1/src/states/GameState.hpp \
   /Users/pavel/Desktop/WorkingProject/CplusWorks/AID/Practice1/src/render/IRenderAdapter.hpp \
   /Users/pavel/Desktop/WorkingProject/CplusWorks/AID/Practice1/src/logger/logger.hpp \

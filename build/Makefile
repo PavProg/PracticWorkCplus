@@ -201,6 +201,30 @@ src/main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyGameEngine.dir/build.make CMakeFiles/MyGameEngine.dir/src/main.cpp.s
 .PHONY : src/main.cpp.s
 
+src/render/OpenGLAdapter.o: src/render/OpenGLAdapter.cpp.o
+.PHONY : src/render/OpenGLAdapter.o
+
+# target to build an object file
+src/render/OpenGLAdapter.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyGameEngine.dir/build.make CMakeFiles/MyGameEngine.dir/src/render/OpenGLAdapter.cpp.o
+.PHONY : src/render/OpenGLAdapter.cpp.o
+
+src/render/OpenGLAdapter.i: src/render/OpenGLAdapter.cpp.i
+.PHONY : src/render/OpenGLAdapter.i
+
+# target to preprocess a source file
+src/render/OpenGLAdapter.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyGameEngine.dir/build.make CMakeFiles/MyGameEngine.dir/src/render/OpenGLAdapter.cpp.i
+.PHONY : src/render/OpenGLAdapter.cpp.i
+
+src/render/OpenGLAdapter.s: src/render/OpenGLAdapter.cpp.s
+.PHONY : src/render/OpenGLAdapter.s
+
+# target to generate assembly for a file
+src/render/OpenGLAdapter.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyGameEngine.dir/build.make CMakeFiles/MyGameEngine.dir/src/render/OpenGLAdapter.cpp.s
+.PHONY : src/render/OpenGLAdapter.cpp.s
+
 src/states/MenuState.o: src/states/MenuState.cpp.o
 .PHONY : src/states/MenuState.o
 
@@ -224,6 +248,30 @@ src/states/MenuState.s: src/states/MenuState.cpp.s
 src/states/MenuState.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyGameEngine.dir/build.make CMakeFiles/MyGameEngine.dir/src/states/MenuState.cpp.s
 .PHONY : src/states/MenuState.cpp.s
+
+src/states/PauseState.o: src/states/PauseState.cpp.o
+.PHONY : src/states/PauseState.o
+
+# target to build an object file
+src/states/PauseState.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyGameEngine.dir/build.make CMakeFiles/MyGameEngine.dir/src/states/PauseState.cpp.o
+.PHONY : src/states/PauseState.cpp.o
+
+src/states/PauseState.i: src/states/PauseState.cpp.i
+.PHONY : src/states/PauseState.i
+
+# target to preprocess a source file
+src/states/PauseState.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyGameEngine.dir/build.make CMakeFiles/MyGameEngine.dir/src/states/PauseState.cpp.i
+.PHONY : src/states/PauseState.cpp.i
+
+src/states/PauseState.s: src/states/PauseState.cpp.s
+.PHONY : src/states/PauseState.s
+
+# target to generate assembly for a file
+src/states/PauseState.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyGameEngine.dir/build.make CMakeFiles/MyGameEngine.dir/src/states/PauseState.cpp.s
+.PHONY : src/states/PauseState.cpp.s
 
 src/states/PlayState.o: src/states/PlayState.cpp.o
 .PHONY : src/states/PlayState.o
@@ -315,9 +363,15 @@ help:
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
+	@echo "... src/render/OpenGLAdapter.o"
+	@echo "... src/render/OpenGLAdapter.i"
+	@echo "... src/render/OpenGLAdapter.s"
 	@echo "... src/states/MenuState.o"
 	@echo "... src/states/MenuState.i"
 	@echo "... src/states/MenuState.s"
+	@echo "... src/states/PauseState.o"
+	@echo "... src/states/PauseState.i"
+	@echo "... src/states/PauseState.s"
 	@echo "... src/states/PlayState.o"
 	@echo "... src/states/PlayState.i"
 	@echo "... src/states/PlayState.s"

@@ -2,6 +2,7 @@ CMakeFiles/MyGameEngine.dir/src/states/PlayState.cpp.o: \
   /Users/pavel/Desktop/WorkingProject/CplusWorks/AID/Practice1/src/states/PlayState.cpp \
   /Users/pavel/Desktop/WorkingProject/CplusWorks/AID/Practice1/src/states/PlayState.hpp \
   /Users/pavel/Desktop/WorkingProject/CplusWorks/AID/Practice1/src/states/GameState.hpp \
+  /Users/pavel/Desktop/WorkingProject/CplusWorks/AID/Practice1/src/render/IRenderAdapter.hpp \
   /Users/pavel/Desktop/WorkingProject/CplusWorks/AID/Practice1/src/logger/logger.hpp \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/string \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/max.h \
