@@ -3,6 +3,7 @@
 
 
 #include <string>
+#include <fstream>
 
 enum class LogLevel {
     Info,
@@ -12,7 +13,7 @@ enum class LogLevel {
 
 class Logger {
     public:
-        static void Init();
+        static void Init(const std::string& filename = "log.txt");
         static void ShutDown();
         static void Log(LogLevel level, const std::string& message);
         static void Warning(const std::string& message);
@@ -20,6 +21,7 @@ class Logger {
         static void Error(const std::string& message);
     private:
         static bool s_initialized;
+        static std::ofstream s_file;
         static std::string GetCurrentTime();
 };
 

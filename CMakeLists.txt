@@ -20,6 +20,11 @@ set(SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/src/application/application.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/utils/gl.c
     ${CMAKE_CURRENT_SOURCE_DIR}/src/logger/logger.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/states/MenuState.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/states/PlayState.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/states/PauseState.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/states/StateManager.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/render/OpenGLAdapter.cpp
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES})

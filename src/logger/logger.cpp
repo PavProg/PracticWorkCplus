@@ -5,14 +5,25 @@
 #include <iomanip>
 
 bool Logger::s_initialized = false;
+std::ofstream Logger::s_file;
 
-void Logger::Init() {
+void Logger::Init(const std::string& filename) {
+    if (s_initialized) return;
+
+    s_file.open(filename, std::ios::app);
+    if (!s_file.is_open()) {
+        std::cerr << "Failed to open log file: " << filename << std::endl;
+    }
+
     s_initialized = true;
     Info("Logger initialized");
 }
 
 void Logger::ShutDown() {
     Info("Logger shutdown");
+    if (s_file.is_open()) {
+        s_file.close();
+    }
     s_initialized = false;
 }
 
@@ -24,7 +35,15 @@ void Logger::Log(LogLevel level, const std::string& message) {
         case LogLevel::Warning: levelStr = "WARNING"; break;
         case LogLevel::Error: levelStr = "ERROR"; break;
     }
-    std::cout << "[" << GetCurrentTime() << "] [" << levelStr << "] " << message << std::endl;
+    std::string formatted = "[" + GetCurrentTime() + "][" + levelStr + "] " + message;
+
+    // std::cout << formatted << std::endl;
+
+    if (s_file.is_open()) {
+        s_file << formatted << std::endl;
+        s_file.flush();
+    }
+
 }
 
 void Logger::Info(const std::string& message) {

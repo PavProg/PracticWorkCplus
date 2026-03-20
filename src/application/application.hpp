@@ -1,8 +1,10 @@
 #ifndef APPLICATION_HPP
 #define APPLICATION_HPP
 
+#include <memory>
+#include "render/IRenderAdapter.hpp"
 struct GLFWwindow;
-
+class StateManager;
 
 class Application {
     public:
@@ -17,6 +19,8 @@ class Application {
     GLFWwindow* window;
     bool running;
     double lastFrameTime;
+    std::unique_ptr<StateManager> stateManager;
+    std::unique_ptr<IRenderAdapter> renderer;
 };
 
 #endif
