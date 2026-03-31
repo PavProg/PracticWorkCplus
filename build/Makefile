@@ -153,6 +153,30 @@ src/application/application.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyGameEngine.dir/build.make CMakeFiles/MyGameEngine.dir/src/application/application.cpp.s
 .PHONY : src/application/application.cpp.s
 
+src/ecs/World.o: src/ecs/World.cpp.o
+.PHONY : src/ecs/World.o
+
+# target to build an object file
+src/ecs/World.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyGameEngine.dir/build.make CMakeFiles/MyGameEngine.dir/src/ecs/World.cpp.o
+.PHONY : src/ecs/World.cpp.o
+
+src/ecs/World.i: src/ecs/World.cpp.i
+.PHONY : src/ecs/World.i
+
+# target to preprocess a source file
+src/ecs/World.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyGameEngine.dir/build.make CMakeFiles/MyGameEngine.dir/src/ecs/World.cpp.i
+.PHONY : src/ecs/World.cpp.i
+
+src/ecs/World.s: src/ecs/World.cpp.s
+.PHONY : src/ecs/World.s
+
+# target to generate assembly for a file
+src/ecs/World.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyGameEngine.dir/build.make CMakeFiles/MyGameEngine.dir/src/ecs/World.cpp.s
+.PHONY : src/ecs/World.cpp.s
+
 src/logger/logger.o: src/logger/logger.cpp.o
 .PHONY : src/logger/logger.o
 
@@ -357,6 +381,9 @@ help:
 	@echo "... src/application/application.o"
 	@echo "... src/application/application.i"
 	@echo "... src/application/application.s"
+	@echo "... src/ecs/World.o"
+	@echo "... src/ecs/World.i"
+	@echo "... src/ecs/World.s"
 	@echo "... src/logger/logger.o"
 	@echo "... src/logger/logger.i"
 	@echo "... src/logger/logger.s"

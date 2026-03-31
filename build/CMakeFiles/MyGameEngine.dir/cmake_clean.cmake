@@ -1,6 +1,8 @@
 file(REMOVE_RECURSE
   "CMakeFiles/MyGameEngine.dir/src/application/application.cpp.o"
   "CMakeFiles/MyGameEngine.dir/src/application/application.cpp.o.d"
+  "CMakeFiles/MyGameEngine.dir/src/ecs/World.cpp.o"
+  "CMakeFiles/MyGameEngine.dir/src/ecs/World.cpp.o.d"
   "CMakeFiles/MyGameEngine.dir/src/logger/logger.cpp.o"
   "CMakeFiles/MyGameEngine.dir/src/logger/logger.cpp.o.d"
   "CMakeFiles/MyGameEngine.dir/src/main.cpp.o"
