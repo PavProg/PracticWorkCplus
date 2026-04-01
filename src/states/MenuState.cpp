@@ -10,7 +10,7 @@ void MenuState::Exit() {
 }
 
 void MenuState::Update(float deltaTime) {
-    Logger::Info("MenuState::Update, deltaTime = " + std::to_string(deltaTime));
+    // Logger::Info("MenuState::Update, deltaTime = " + std::to_string(deltaTime));
 }
 
 void MenuState::Render(IRenderAdapter& renderer) {

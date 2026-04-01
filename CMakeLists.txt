@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 
 include_directories(
-    /Users/pavel/Desktop/WorkingProject/CplusWorks/AID/Practice1/dependencies/include #${CMAKE_CURRENT_SOURCE_DIR}/dependencies/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/dependencies/include    # /Users/pavel/Desktop/WorkingProject/CplusWorks/AID/Practice1/dependencies/include #
     ${CMAKE_CURRENT_SOURCE_DIR}/src
 )
 
@@ -29,6 +29,8 @@ set(SOURCES
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES})
+
+target_include_directories(${PROJECT_NAME} PRIVATE /usr/local/include)
 
 # Линковка библиотек
 if(GLFW_FOUND)

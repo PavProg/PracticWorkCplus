@@ -10,7 +10,7 @@ void PauseState::Exit() {
 }
 
 void PauseState::Update(float deltaTime) {
-    Logger::Info("PauseState::Update, deltaTime = " + std::to_string(deltaTime));
+    // Logger::Info("PauseState::Update, deltaTime = " + std::to_string(deltaTime));
 }
 
 void PauseState::Render(IRenderAdapter& renderer) {

@@ -10,7 +10,7 @@ void PlayState::Exit() {
 }
 
 void PlayState::Update(float deltaTime) {
-    Logger::Info("PlayState::Update, deltaTime = " + std::to_string(deltaTime));
+    // Logger::Info("PlayState::Update, deltaTime = " + std::to_string(deltaTime));
 }
 
 void PlayState::Render(IRenderAdapter& renderer) {

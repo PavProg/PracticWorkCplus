@@ -7,13 +7,16 @@ std::unordered_map<EntityId, T>& World::GetComponentPool() {
     auto it = m_componentPools.find(type);
     if (it == m_componentPools.end()) {
         auto pool = std::make_unique<std::unordered_map<EntityId, T>>();
-        m_componentPools[type] = std::unique_ptr<void, void(*)(void*)>(
-            pool.release(),
-            [](void* ptr) { delete static_cast<std::unordered_map<EntityId, T>*>(ptr); }
+        auto result = m_componentPools.emplace(
+            type,
+            std::unique_ptr<void, void(*)(void*)>(
+                pool.release(),
+                [](void* ptr) { delete static_cast<std::unordered_map<EntityId, T>*>(ptr); }
+            )
         );
+        it = result.first;
     }
-    auto& poolPtr = m_componentPools[type];
-    return *static_cast<std::unordered_map<EntityId, T>*>(poolPtr.get());
+    return *static_cast<std::unordered_map<EntityId, T>*>(it->second.get());
 }
 
 template<typename T>
@@ -22,7 +25,7 @@ bool World::HasComponent(EntityId entity) const {
     auto it = m_componentPools.find(type);
     if (it == m_componentPools.end()) return false;
     const auto& map = *static_cast<const std::unordered_map<EntityId, T>*>(it->second.get());
-    return map.find(entity) != map.end;
+    return map.find(entity) != map.end();
 }
 
 template<typename T>
