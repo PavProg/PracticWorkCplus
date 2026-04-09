@@ -11,6 +11,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/Users/pavel/Desktop/WorkingProject/CplusWorks/AID/Practice1/src/utils/gl.c" "CMakeFiles/MyGameEngine.dir/src/utils/gl.c.o" "gcc" "CMakeFiles/MyGameEngine.dir/src/utils/gl.c.o.d"
   "/Users/pavel/Desktop/WorkingProject/CplusWorks/AID/Practice1/src/application/application.cpp" "CMakeFiles/MyGameEngine.dir/src/application/application.cpp.o" "gcc" "CMakeFiles/MyGameEngine.dir/src/application/application.cpp.o.d"
   "/Users/pavel/Desktop/WorkingProject/CplusWorks/AID/Practice1/src/ecs/World.cpp" "CMakeFiles/MyGameEngine.dir/src/ecs/World.cpp.o" "gcc" "CMakeFiles/MyGameEngine.dir/src/ecs/World.cpp.o.d"
+  "/Users/pavel/Desktop/WorkingProject/CplusWorks/AID/Practice1/src/ecs/systems/RenderSystem.cpp" "CMakeFiles/MyGameEngine.dir/src/ecs/systems/RenderSystem.cpp.o" "gcc" "CMakeFiles/MyGameEngine.dir/src/ecs/systems/RenderSystem.cpp.o.d"
   "/Users/pavel/Desktop/WorkingProject/CplusWorks/AID/Practice1/src/logger/logger.cpp" "CMakeFiles/MyGameEngine.dir/src/logger/logger.cpp.o" "gcc" "CMakeFiles/MyGameEngine.dir/src/logger/logger.cpp.o.d"
   "/Users/pavel/Desktop/WorkingProject/CplusWorks/AID/Practice1/src/main.cpp" "CMakeFiles/MyGameEngine.dir/src/main.cpp.o" "gcc" "CMakeFiles/MyGameEngine.dir/src/main.cpp.o.d"
   "/Users/pavel/Desktop/WorkingProject/CplusWorks/AID/Practice1/src/render/OpenGLAdapter.cpp" "CMakeFiles/MyGameEngine.dir/src/render/OpenGLAdapter.cpp.o" "gcc" "CMakeFiles/MyGameEngine.dir/src/render/OpenGLAdapter.cpp.o.d"

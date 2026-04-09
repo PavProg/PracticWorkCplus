@@ -14,6 +14,5 @@ void PlayState::Update(float deltaTime) {
 }
 
 void PlayState::Render(IRenderAdapter& renderer) {
-    renderer.Clear(0.1f, 0.1f, 0.1f, 1.0f);
-    renderer.DrawTriangle();
+
 }

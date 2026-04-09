@@ -18,47 +18,59 @@ static std::string ReadFile(const std::string& path) {
     return ss.str();
 }
 
-OpenGLAdapter::OpenGLAdapter(GLFWwindow* window) 
-: m_window(window), m_vao(0), m_vbo(0), m_shaderProgram(0),
-m_vertex_Path("/Users/pavel/Desktop/WorkingProject/CplusWorks/AID/Practice1/assets/shaders/triangle.vert"),
-m_fragmentPath("/Users/pavel/Desktop/WorkingProject/CplusWorks/AID/Practice1/assets/shaders/triangle.frag") {}
+OpenGLAdapter::OpenGLAdapter(GLFWwindow* window)
+    : m_window(window),
+      m_shaderProgram(0),
+      m_vaoTriangle(0), m_vboTriangle(0),
+      m_vaoSquare(0), m_vboSquare(0),
+      m_triangleVertexCount(3), m_squareVertexCount(6),
+      m_vertex_Path("/Users/pavel/Desktop/WorkingProject/CplusWorks/AID/Practice1/assets/shaders/triangle.vert"),
+      m_fragmentPath("/Users/pavel/Desktop/WorkingProject/CplusWorks/AID/Practice1/assets/shaders/triangle.frag") {}
 
 OpenGLAdapter::~OpenGLAdapter() {
     Shutdown();
 }
 
 bool OpenGLAdapter::Init() {
-    // Треугольник по xyz и rgb
     Logger::Info("OpenGLAdapter::Init started");
-    float vertices[] = {
-        -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f,
-         0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f,
-         0.0f,  0.5f, 0.0f, 0.0f, 0.0f, 1.0f
+    float triangleVertices[] = {
+        -0.5f, -0.5f, 0.0f,
+         0.5f, -0.5f, 0.0f,
+         0.0f,  0.5f, 0.0f
+    };
+    float squareVertices[] = {
+        -0.5f, -0.5f, 0.0f,
+         0.5f, -0.5f, 0.0f,
+         0.5f,  0.5f, 0.0f,
+        -0.5f, -0.5f, 0.0f,
+         0.5f,  0.5f, 0.0f,
+        -0.5f,  0.5f, 0.0f
     };
     Logger::Info("Init: vertices defined");
     
-    //VAO
-    glGenVertexArrays(1, &m_vao);
-    glBindVertexArray(m_vao);
-    Logger::Info("Init: VAO generated");
-
-    // VBO
-    glGenBuffers(1, &m_vbo);
-    glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
-    Logger::Info("Init: VBO generated");
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-    Logger::Info("Init: Data loaded in buffer");
-
-    // Позиция position = 0
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+    //VAO и VBO для треугольника
+    glGenVertexArrays(1, &m_vaoTriangle);
+    glBindVertexArray(m_vaoTriangle);
+    glGenBuffers(1, &m_vboTriangle);
+    glBindBuffer(GL_ARRAY_BUFFER, m_vboTriangle);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(triangleVertices), triangleVertices, GL_STATIC_DRAW);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
-    //цвет layout = 1
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
-    glEnableVertexAttribArray(1);
-
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 
+    // VAO и VBO для квадрата
+    glGenVertexArrays(1, &m_vaoSquare);
+    glBindVertexArray(m_vaoSquare);
+    glGenBuffers(1, &m_vboSquare);
+    glBindBuffer(GL_ARRAY_BUFFER, m_vboSquare);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(squareVertices), squareVertices, GL_STATIC_DRAW);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindVertexArray(0);
+
+    // Загрузка шейдеров
     if (!LoadShaders()) {
         Logger::Error("LoadShader failed");
         return false;
@@ -76,10 +88,29 @@ void OpenGLAdapter::Clear(float r, float g, float b, float a) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void OpenGLAdapter::DrawTriangle() {
+void OpenGLAdapter::DrawMesh(const glm::mat4& model, PrimitiveType type, const glm::vec4& color) {
     glUseProgram(m_shaderProgram);
-    glBindVertexArray(m_vao);
-    glDrawArrays(GL_TRIANGLES, 0, 3);
+
+    int modelLoc = glGetUniformLocation(m_shaderProgram, "uModel");
+    int colorLoc = glGetUniformLocation(m_shaderProgram, "uColor");
+    glUniformMatrix4fv(modelLoc, 1, GL_FALSE, &model[0][0]);
+    glUniform4f(colorLoc, color.r, color.g, color.b, color.a);
+
+    // VAO от типа примитива
+    switch (type) {
+        case PrimitiveType::Triangle:
+            glBindVertexArray(m_vaoTriangle);
+            glDrawArrays(GL_TRIANGLES, 0, m_triangleVertexCount);
+            break;
+        case PrimitiveType::Square:
+            glBindVertexArray(m_vaoSquare);
+            glDrawArrays(GL_TRIANGLES, 0, m_squareVertexCount);
+            break;
+        case PrimitiveType::Cube:
+            Logger::Info("Cube type not yet initialization");
+            break;
+    }
+    glBindVertexArray(0);
 }
 
 void OpenGLAdapter::SwapBuffers() {
@@ -90,10 +121,11 @@ void OpenGLAdapter::SwapBuffers() {
 
 void OpenGLAdapter::Shutdown() {
     DeleteShaders();
-    if (m_vao) glDeleteVertexArrays(1, &m_vao);
-    if (m_vbo) glDeleteBuffers(1, &m_vbo);
-    m_vao = 0;
-    m_vbo = 0;
+    if (m_vaoTriangle) glDeleteVertexArrays(1, &m_vaoTriangle);
+    if (m_vboTriangle) glDeleteBuffers(1, &m_vboTriangle);
+    if (m_vaoSquare) glDeleteVertexArrays(1, &m_vaoSquare);
+    if (m_vboSquare) glDeleteBuffers(1, &m_vboSquare);
+    m_vaoTriangle = m_vboTriangle = m_vaoSquare = m_vboSquare = 0;
 }
 
 void OpenGLAdapter::ReloadShaders() {
@@ -144,22 +176,17 @@ bool OpenGLAdapter::LoadShaders() {
         vertexSrc = R"(
             #version 330 core
             layout (location = 0) in vec3 aPos;
-            layout (location = 1) in vec3 aColor;
-
-            out vec3 Color;
-
+            uniform mat4 uModel;
             void main() {
-            gl_Position = vec4(aPos, 1.0);
-            Color = aColor;
+                gl_Position = uModel * vec4(aPos, 1.0);
             }
         )";
         fragmentSrc = R"(
             #version 330 core
-            in vec3 Color;
+            uniform vec4 uColor;
             out vec4 FragColor;
-
             void main() {
-                FragColor = vec4(Color, 1.0);
+                FragColor = uColor;
             }
         )";
     }

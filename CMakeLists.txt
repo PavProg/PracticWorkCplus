@@ -26,6 +26,7 @@ set(SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/src/states/StateManager.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/render/OpenGLAdapter.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/ecs/World.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/ecs/systems/RenderSystem.cpp
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES})

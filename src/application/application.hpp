@@ -3,24 +3,30 @@
 
 #include <memory>
 #include "render/IRenderAdapter.hpp"
+#include "ecs/systems/RenderSystem.hpp"
+
 struct GLFWwindow;
 class StateManager;
 
 class Application {
     public:
-    Application();
-    ~Application();
+        Application();
+        ~Application();
 
-    bool Init(int width, int height, const char* title);
-    void Run();
-    void Shutdown();
+        bool Init(int width, int height, const char* title);
+        void Run();
+        void Shutdown();
 
     private:
-    GLFWwindow* window;
-    bool running;
-    double lastFrameTime;
-    std::unique_ptr<StateManager> stateManager;
-    std::unique_ptr<IRenderAdapter> renderer;
+        void CreateTestScene(World& world);
+
+        GLFWwindow* window;
+        bool running;
+        double lastFrameTime;
+        std::unique_ptr<StateManager> stateManager;
+        std::unique_ptr<IRenderAdapter> renderer;
+        std::unique_ptr<World> world;
+        std::unique_ptr<RenderSystem> renderSystem;
 };
 
 #endif

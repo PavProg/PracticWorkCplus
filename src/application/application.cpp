@@ -1,5 +1,6 @@
 #include <glad/gl.h>
 #include <GLFW/glfw3.h>
+#include "glm/glm.hpp"
 #include "application.hpp"
 #include "logger/logger.hpp"
 #include "states/StateManager.hpp"
@@ -8,6 +9,11 @@
 #include "states/MenuState.hpp"
 #include "states/PauseState.hpp"
 #include "render/OpenGLAdapter.hpp"
+#include "ecs/World.hpp"
+#include "ecs/components/Transform.hpp"
+#include "ecs/components/Tag.hpp"
+#include "ecs/components/MeshRenderer.hpp"
+#include "ecs/systems/RenderSystem.hpp"
 
 Application::Application() 
 : window(nullptr), running(false), lastFrameTime(0.0), stateManager(nullptr) {}
@@ -58,8 +64,66 @@ bool Application::Init(int width, int height, const char* title) {
         Logger::Error("Failed to initialize render adapter");
         return false;
     }
+    world = std::make_unique<World>();
+    renderSystem = std::make_unique<RenderSystem>(*world, *renderer);
+
+    CreateTestScene(*world);
 
     return true;
+}
+
+void Application::CreateTestScene(World& world) {
+    // Сущность 1 - красный треугольник
+    EntityId e1 = world.CreateEntity();
+    world.AddComponent<Transform>(e1, {
+        glm::vec3(-2.0f, 0.0f, 0.0f),
+        glm::quat(1.0f, 0.0f, 0.0f, 0.0f),
+        glm::vec3(1.0f, 1.0f, 1.0f)
+    });
+    world.AddComponent<MeshRenderer>(e1, {
+        PrimitiveType::Triangle,
+        glm::vec4(1.0f, 0.0f, 0.0f, 1.0f)
+    });
+    world.AddComponent<Tag>(e1, {"RedTriangle"});
+
+    // Сущность2 - зеленый квадрат в центре
+    EntityId e2 = world.CreateEntity();
+    world.AddComponent<Transform>(e2, {
+        glm::vec3(0.0f, 0.0f, 0.0f),
+        glm::quat(1.0f, 0.0f, 0.0f, 0.0f),
+        glm::vec3(1.0f, 1.0f, 1.0f)
+    });
+    world.AddComponent<MeshRenderer>(e2, {
+        PrimitiveType::Square,
+        glm::vec4(0.0f, 1.0f, 0.0f, 1.0f)
+    });
+    world.AddComponent<Tag>(e2, {"GreenSquare"});
+
+    //Сущность 3 - Синий треугольник справа
+    EntityId e3 = world.CreateEntity();
+    world.AddComponent<Transform>(e3, {
+        glm::vec3(2.0f, 0.0f, 0.0f),
+        glm::quat(1.0f, 0.0f, 0.0f, 0.0f),
+        glm::vec3(0.5f, 0.5f, 0.5f)
+    });
+    world.AddComponent<MeshRenderer>(e3, {
+        PrimitiveType::Triangle,
+        glm::vec4(0.0f, 0.0f, 1.0f, 1.0f)
+    });
+    world.AddComponent<Tag>(e3, {"BlueTriangle"});
+
+    //Сущность 4 - желтый квадрат сверху
+    EntityId e4 = world.CreateEntity();
+    world.AddComponent<Transform>(e4, {
+        glm::vec3(0.0f, 1.5f, 0.0f),
+        glm::quat(1.0f, 0.0f, 0.0f, 0.0f),
+        glm::vec3(0.8f, 0.8f, 1.0f)
+    });
+    world.AddComponent<MeshRenderer>(e4, {
+        PrimitiveType::Square,
+        glm::vec4(1.0f, 1.0f, 0.0f, 1.0f)
+    });
+    world.AddComponent<Tag>(e4, {"YellowSquare"});
 }
 
 void Application::Run() {
@@ -74,34 +138,18 @@ void Application::Run() {
 
         if(stateManager) {
             stateManager->Update(deltaTime);
+        }
+
+        renderer->Clear(0.0f, 0.0f, 0.0f, 0.0f);
+
+        // update ecs render
+        if (renderSystem) {
+            renderSystem->Update();
+        }
+
+        if (stateManager) {
             stateManager->Render(*renderer);
         }
-
-        static bool previousKeyState = false;
-
-        bool currentKeyState = glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS;
-        if (currentKeyState && !previousKeyState) {
-            renderer->ReloadShaders();
-        }
-        previousKeyState = currentKeyState;
-        
-        currentKeyState = glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS;
-        if (currentKeyState && !previousKeyState) {
-            stateManager->ChangeState(std::make_unique<PlayState>());
-        }
-        previousKeyState = currentKeyState;
-
-        currentKeyState = glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS;
-        if (currentKeyState && !previousKeyState) {
-            stateManager->ChangeState(std::make_unique<MenuState>());
-        }
-        previousKeyState = currentKeyState;
-
-        currentKeyState = glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS;
-        if (currentKeyState && !previousKeyState) {
-            stateManager->ChangeState(std::make_unique<PauseState>());
-        }
-        previousKeyState = currentKeyState;
 
         renderer->SwapBuffers();
     }

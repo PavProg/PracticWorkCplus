@@ -177,6 +177,30 @@ src/ecs/World.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyGameEngine.dir/build.make CMakeFiles/MyGameEngine.dir/src/ecs/World.cpp.s
 .PHONY : src/ecs/World.cpp.s
 
+src/ecs/systems/RenderSystem.o: src/ecs/systems/RenderSystem.cpp.o
+.PHONY : src/ecs/systems/RenderSystem.o
+
+# target to build an object file
+src/ecs/systems/RenderSystem.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyGameEngine.dir/build.make CMakeFiles/MyGameEngine.dir/src/ecs/systems/RenderSystem.cpp.o
+.PHONY : src/ecs/systems/RenderSystem.cpp.o
+
+src/ecs/systems/RenderSystem.i: src/ecs/systems/RenderSystem.cpp.i
+.PHONY : src/ecs/systems/RenderSystem.i
+
+# target to preprocess a source file
+src/ecs/systems/RenderSystem.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyGameEngine.dir/build.make CMakeFiles/MyGameEngine.dir/src/ecs/systems/RenderSystem.cpp.i
+.PHONY : src/ecs/systems/RenderSystem.cpp.i
+
+src/ecs/systems/RenderSystem.s: src/ecs/systems/RenderSystem.cpp.s
+.PHONY : src/ecs/systems/RenderSystem.s
+
+# target to generate assembly for a file
+src/ecs/systems/RenderSystem.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyGameEngine.dir/build.make CMakeFiles/MyGameEngine.dir/src/ecs/systems/RenderSystem.cpp.s
+.PHONY : src/ecs/systems/RenderSystem.cpp.s
+
 src/logger/logger.o: src/logger/logger.cpp.o
 .PHONY : src/logger/logger.o
 
@@ -384,6 +408,9 @@ help:
 	@echo "... src/ecs/World.o"
 	@echo "... src/ecs/World.i"
 	@echo "... src/ecs/World.s"
+	@echo "... src/ecs/systems/RenderSystem.o"
+	@echo "... src/ecs/systems/RenderSystem.i"
+	@echo "... src/ecs/systems/RenderSystem.s"
 	@echo "... src/logger/logger.o"
 	@echo "... src/logger/logger.i"
 	@echo "... src/logger/logger.s"
