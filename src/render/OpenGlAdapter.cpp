@@ -6,6 +6,7 @@
 #include <iostream>
 #include <vector>
 #include "logger/logger.hpp"
+#include "glm/gtc/type_ptr.hpp"
 
 // Ф-ция для чтения файла
 static std::string ReadFile(const std::string& path) {
@@ -24,8 +25,9 @@ OpenGLAdapter::OpenGLAdapter(GLFWwindow* window)
       m_vaoTriangle(0), m_vboTriangle(0),
       m_vaoSquare(0), m_vboSquare(0),
       m_triangleVertexCount(3), m_squareVertexCount(6),
-      m_vertex_Path("/Users/pavel/Desktop/WorkingProject/CplusWorks/AID/Practice1/assets/shaders/triangle.vert"),
-      m_fragmentPath("/Users/pavel/Desktop/WorkingProject/CplusWorks/AID/Practice1/assets/shaders/triangle.frag") {}
+      m_vertex_Path("assets/shaders/triangle.vert"),
+      m_fragmentPath("assets/shaders/triangle.frag"),
+      m_viewMatrix(1.0f), m_projectionMatrix(1.0f) {}
 
 OpenGLAdapter::~OpenGLAdapter() {
     Shutdown();
@@ -88,12 +90,22 @@ void OpenGLAdapter::Clear(float r, float g, float b, float a) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
+void OpenGLAdapter::SetCamera(const glm::mat4& view, const glm::mat4& projection) {
+    m_viewMatrix = view;
+    m_projectionMatrix = projection;
+}
+
 void OpenGLAdapter::DrawMesh(const glm::mat4& model, PrimitiveType type, const glm::vec4& color) {
     glUseProgram(m_shaderProgram);
 
     int modelLoc = glGetUniformLocation(m_shaderProgram, "uModel");
+    int viewLoc = glGetUniformLocation(m_shaderProgram, "uView");
+    int projLoc = glGetUniformLocation(m_shaderProgram, "uProjection");
     int colorLoc = glGetUniformLocation(m_shaderProgram, "uColor");
-    glUniformMatrix4fv(modelLoc, 1, GL_FALSE, &model[0][0]);
+
+    glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+    glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(m_viewMatrix));
+    glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(m_projectionMatrix));
     glUniform4f(colorLoc, color.r, color.g, color.b, color.a);
 
     // VAO от типа примитива
@@ -142,7 +154,9 @@ void OpenGLAdapter::ReloadShaders() {
     unsigned int fragmentShader = CompileShaders(GL_FRAGMENT_SHADER, fragmentSrc);
 
     if (!vertexShader || !fragmentShader) {
-        return;
+        if (vertexShader) glDeleteShader(vertexShader);
+        if (fragmentShader) glDeleteShader(fragmentShader);
+        Logger::Error("ReloadShader: shader compilation failed");
     }
 
     newProgram = glCreateProgram();
@@ -171,14 +185,20 @@ void OpenGLAdapter::ReloadShaders() {
 bool OpenGLAdapter::LoadShaders() {
     std::string vertexSrc = ReadFile(m_vertex_Path);
     std::string fragmentSrc = ReadFile(m_fragmentPath);
+
     // Если файлов нет напрямую реализуем
     if (vertexSrc.empty() || fragmentSrc.empty()) {
+        Logger::Warning("Shader isnt found. Using fallback shaders");
         vertexSrc = R"(
             #version 330 core
             layout (location = 0) in vec3 aPos;
+
             uniform mat4 uModel;
+            uniform mat4 uView;
+            uniform mat4 uProjection;
+
             void main() {
-                gl_Position = uModel * vec4(aPos, 1.0);
+                gl_Position = uProjection * uView * uModel * vec4(aPos, 1.0);
             }
         )";
         fragmentSrc = R"(

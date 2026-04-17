@@ -1,12 +1,12 @@
 #include <glad/gl.h>
 #include <GLFW/glfw3.h>
 #include "glm/glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
 #include "application.hpp"
 #include "logger/logger.hpp"
 #include "states/StateManager.hpp"
 #include "states/MenuState.hpp"
 #include "states/PlayState.hpp"
-#include "states/MenuState.hpp"
 #include "states/PauseState.hpp"
 #include "render/OpenGLAdapter.hpp"
 #include "ecs/World.hpp"
@@ -128,21 +128,45 @@ void Application::CreateTestScene(World& world) {
 
 void Application::Run() {
     Logger::Info("Entering main loop");
-
+    lastFrameTime = glfwGetTime();
     while (running && !glfwWindowShouldClose(window)) {
         double currentTime = glfwGetTime();
-        double deltaTime = currentTime - lastFrameTime;
+        float deltaTime = static_cast<float>(currentTime - lastFrameTime);
         lastFrameTime = currentTime;
 
         glfwPollEvents();
 
-        if(stateManager) {
+        if (stateManager) {
             stateManager->Update(deltaTime);
         }
 
-        renderer->Clear(0.0f, 0.0f, 0.0f, 0.0f);
+        // Настрока камеры для этого кадра
+        int fbWidth, fbHeight;
+        glfwGetFramebufferSize(window, &fbWidth, &fbHeight);
+        glViewport(0, 0, fbWidth, fbHeight);
 
-        // update ecs render
+        float aspect = (fbHeight > 0)
+            ? static_cast<float>(fbWidth) / static_cast<float>(fbHeight)
+            : 1.0f;
+
+        renderer->Clear(0.0f, 0.0f, 0.0f, 1.0f);
+
+        glm::mat4 view = glm::lookAt(
+            glm::vec3(0.0f, 0.0f, 5.0f),    // Камера в мире
+            glm::vec3(0.0f, 0.0f, 0.0f),    // Куда смотреть (центр)
+            glm::vec3(0.0f, 1.0f, 0.0f)     // вектор вверх по y
+        );
+
+        glm::mat4 projection = glm::perspective(
+            glm::radians(45.0f),    // Угол обзора в радианах
+            aspect,
+            0.1f,
+            100.f   // объекты ближе 0.1 и дальше 100 отсекаются
+        );
+
+        renderer->SetCamera(view, projection);
+
+        // Отрисовка через Ecs
         if (renderSystem) {
             renderSystem->Update();
         }

@@ -15,6 +15,8 @@ public:
 
     virtual void DrawMesh(const glm::mat4& model, PrimitiveType type, const glm::vec4& color) = 0;
 
+    virtual void SetCamera(const glm::mat4& view, const glm::mat4& projection) = 0;
+
     virtual void ReloadShaders() = 0;
 };
 

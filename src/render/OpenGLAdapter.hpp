@@ -4,6 +4,7 @@
 #include "IRenderAdapter.hpp"
 #include <string>
 #include <chrono>
+#include <glm/glm.hpp>
 
 struct GLFWwindow;
 
@@ -18,6 +19,8 @@ class OpenGLAdapter : public IRenderAdapter {
         void Shutdown() override;
 
         void DrawMesh(const glm::mat4& model, PrimitiveType type, const glm::vec4& color) override;
+
+        void SetCamera(const glm::mat4& view, const glm::mat4& projection) override;
 
         void ReloadShaders() override;
     private:
@@ -35,6 +38,9 @@ class OpenGLAdapter : public IRenderAdapter {
 
         std::string m_vertex_Path;
         std::string m_fragmentPath;
+
+        glm::mat4 m_viewMatrix;
+        glm::mat4 m_projectionMatrix;
         
         bool LoadShaders();
         unsigned int CompileShaders(unsigned int type, const std::string& source);
