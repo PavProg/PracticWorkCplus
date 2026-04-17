@@ -14,6 +14,7 @@
 #include "ecs/components/Tag.hpp"
 #include "ecs/components/MeshRenderer.hpp"
 #include "ecs/systems/RenderSystem.hpp"
+#include "ecs/systems/AnimationSystem.hpp"
 
 Application::Application() 
 : window(nullptr), running(false), lastFrameTime(0.0), stateManager(nullptr) {}
@@ -65,7 +66,11 @@ bool Application::Init(int width, int height, const char* title) {
         return false;
     }
     world = std::make_unique<World>();
+    Logger::Info("Build Marker v2: creating systems");
     renderSystem = std::make_unique<RenderSystem>(*world, *renderer);
+    Logger::Info("RenderSystem created");
+    animationSystem = std::make_unique<AnimationSystem>(*world);
+    Logger::Info("AnimationSystem created");
 
     CreateTestScene(*world);
 
@@ -165,6 +170,13 @@ void Application::Run() {
         );
 
         renderer->SetCamera(view, projection);
+
+        if (animationSystem) {
+            Logger::Info("Calling animationSystem->Update");
+            animationSystem->Update(deltaTime);
+        } else {
+            Logger::Info("animationSystem is NULL!");
+        }
 
         // Отрисовка через Ecs
         if (renderSystem) {

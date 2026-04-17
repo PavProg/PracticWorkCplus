@@ -1033,6 +1033,7 @@ CMakeFiles/MyGameEngine.dir/src/main.cpp.o: \
   /Users/pavel/Desktop/WorkingProject/CplusWorks/AID/Practice1/src/ecs/Component.hpp \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/typeindex \
   /Users/pavel/Desktop/WorkingProject/CplusWorks/AID/Practice1/src/ecs/World.tpp \
+  /Users/pavel/Desktop/WorkingProject/CplusWorks/AID/Practice1/src/ecs/systems/AnimationSystem.hpp \
   /Users/pavel/Desktop/WorkingProject/CplusWorks/AID/Practice1/src/ecs/components/Transform.hpp \
   /usr/local/include/glm/gtc/quaternion.hpp \
   /usr/local/include/glm/gtc/../gtc/constants.hpp \

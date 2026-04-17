@@ -4,6 +4,7 @@
 #include <memory>
 #include "render/IRenderAdapter.hpp"
 #include "ecs/systems/RenderSystem.hpp"
+#include "ecs/systems/AnimationSystem.hpp"
 
 struct GLFWwindow;
 class StateManager;
@@ -27,6 +28,7 @@ class Application {
         std::unique_ptr<IRenderAdapter> renderer;
         std::unique_ptr<World> world;
         std::unique_ptr<RenderSystem> renderSystem;
+        std::unique_ptr<AnimationSystem> animationSystem;
 };
 
 #endif
