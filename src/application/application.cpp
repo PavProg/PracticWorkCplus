@@ -15,6 +15,8 @@
 #include "ecs/components/MeshRenderer.hpp"
 #include "ecs/systems/RenderSystem.hpp"
 #include "ecs/systems/AnimationSystem.hpp"
+#include "ecs/components/Hierarchy.hpp"
+#include "ecs/systems/HierarchyUtils.hpp"
 
 Application::Application() 
 : window(nullptr), running(false), lastFrameTime(0.0), stateManager(nullptr) {}
@@ -129,6 +131,36 @@ void Application::CreateTestScene(World& world) {
         glm::vec4(1.0f, 1.0f, 0.0f, 1.0f)
     });
     world.AddComponent<Tag>(e4, {"YellowSquare"});
+
+    // Далее реализация иерархии. По задумке "центр" - GreenSquare вокруг него будут кружится спутники при запуске анимации
+    // linkObj 1
+    EntityId linkObj1 = world.CreateEntity();
+    world.AddComponent<Transform>(linkObj1, {
+        glm::vec3(0.8f, 0.0f, 0.0f),
+        glm::quat(1.0f, 0.0f, 0.0f, 0.0f),
+        glm::vec3(0.3f, 0.3f, 0.3f)
+    });
+    world.AddComponent<MeshRenderer>(linkObj1, {
+        PrimitiveType::Triangle,
+        glm::vec4(1.0f, 0.5f, 0.0f, 1.0f)
+    });
+    world.AddComponent<Tag>(linkObj1, {"linkedObject1"});
+
+    // linkObj 2
+    EntityId linkObj2 = world.CreateEntity();
+    world.AddComponent<Transform>(linkObj2, {
+        glm::vec3(-0.8f, 0.0f, 0.0f),
+        glm::quat(1.0f, 0.0f, 0.0f, 0.0f),
+        glm::vec3(0.3f, 0.3f, 0.3f)
+    });
+    world.AddComponent<MeshRenderer>(linkObj2, {
+        PrimitiveType::Triangle,
+        glm::vec4(0.0f, 1.0f, 1.0f, 1.0f)
+    });
+    world.AddComponent<Tag>(linkObj2, {"linkedObject2"});
+
+    HierarchyUtils::SetParent(world, linkObj1, e2);
+    HierarchyUtils::SetParent(world, linkObj2, e2);
 }
 
 void Application::Run() {

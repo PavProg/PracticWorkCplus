@@ -11,6 +11,8 @@ class RenderSystem {
     private:
         World& m_world;
         IRenderAdapter& m_renderer;
+
+        glm::mat4 ComputeWorldMatrix(EntityId entity, int depth = 0);
 };
 
 #endif

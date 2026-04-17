@@ -5,8 +5,47 @@
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtc/quaternion.hpp"
+#include "ecs/components/Hierarchy.hpp"
+
+static constexpr int MAX_HIERARCHY_DEPTH = 32;  // Пока максимальный уровень глубины рекурсии 32 должно быть достаточно
 
 RenderSystem::RenderSystem(World& world, IRenderAdapter& renderer) : m_world(world), m_renderer(renderer) {}
+
+// Локальная матрица объекта
+static glm::mat4 BuildLocalMatrix(const Transform& t) {
+    glm::mat4 m = glm::mat4(1.0f);
+    m = glm::translate(m, t.position);
+    m = m * glm::mat4_cast(t.rotation);
+    m = glm::scale(m, t.scale);
+    return m;
+}
+
+// Рекурсивная функция для вычисления локальной матрицы. Иерархия реализуется следующим образом
+// мировая-матрица-ребенка = мировая-матрица-родителя * локальная-матрица-ребенка
+glm::mat4 RenderSystem::ComputeWorldMatrix(EntityId entity, int depth) {
+    if (depth > MAX_HIERARCHY_DEPTH) {
+        Logger::Warning("Hierarchy too deеp (possible cycle) at entity " + std::to_string(entity));
+        return glm::mat4(1.0f);
+    }
+
+    if (!m_world.HasComponent<Transform>(entity)) {
+        return glm::mat4(1.0f);
+    }
+
+    const Transform& t = m_world.GetComponent<Transform>(entity);
+    glm::mat4 localMatrix = BuildLocalMatrix(t);
+
+    if (!m_world.HasComponent<Hierarchy>(entity)) {
+        return localMatrix;
+    }
+    const Hierarchy& h = m_world.GetComponent<Hierarchy>(entity);
+    if (h.parent == INVALID_ID) {
+        return localMatrix;
+    }
+
+    glm::mat4 parentWorld = ComputeWorldMatrix(h.parent, depth + 1);
+    return parentWorld * localMatrix;
+}
 
 void RenderSystem::Update() {
     const auto& meshRenderers = m_world.GetAllComponents<MeshRenderer>();
@@ -18,34 +57,9 @@ void RenderSystem::Update() {
             continue;
         }
 
-        const Transform& transform = m_world.GetComponent<Transform>(entity);
+        // Если у сущности нет родителя - ф-ция вернет локальную матрицу
+        glm::mat4 worldMatrix = ComputeWorldMatrix(entity);
 
-        // Вычисляем модельную матрицу
-        glm::mat4 model = glm::mat4(1.0f);
-
-        model = glm::translate(model, transform.position);
-
-        // преобразуем кватернион в матрицу 3x3 (или 4x4) и умножаем текущую матрицу на неё. Порядок: translate * rotate * scale
-        model = model * glm::mat4_cast(transform.rotation);
-        model = glm::scale(model, transform.scale);
-
-        m_renderer.DrawMesh(model, mesh.primitiveType, mesh.color);
-
-        // логи
-        std::string primType;
-        switch (mesh.primitiveType) {
-            case PrimitiveType::Triangle: primType = "Triangle"; break;
-            case PrimitiveType::Square:   primType = "Square";   break;
-            case PrimitiveType::Cube:     primType = "Cube";     break;
-        }
-        // Logger::Info("RenderSystem: Entity " + std::to_string(entity) +
-        //              " [" + primType + "] color=(" +
-        //              std::to_string(mesh.color.r) + "," +
-        //              std::to_string(mesh.color.g) + "," +
-        //              std::to_string(mesh.color.b) + "," +
-        //              std::to_string(mesh.color.a) + ")" +
-        //              " pos=(" + std::to_string(transform.position.x) + "," +
-        //              std::to_string(transform.position.y) + "," +
-        //              std::to_string(transform.position.z) + ")");
+        m_renderer.DrawMesh(worldMatrix, mesh.primitiveType, mesh.color);
     }
 }

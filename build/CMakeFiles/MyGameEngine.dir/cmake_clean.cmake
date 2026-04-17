@@ -5,6 +5,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/MyGameEngine.dir/src/ecs/World.cpp.o.d"
   "CMakeFiles/MyGameEngine.dir/src/ecs/systems/AnimationSystem.cpp.o"
   "CMakeFiles/MyGameEngine.dir/src/ecs/systems/AnimationSystem.cpp.o.d"
+  "CMakeFiles/MyGameEngine.dir/src/ecs/systems/HierarchyUtils.cpp.o"
+  "CMakeFiles/MyGameEngine.dir/src/ecs/systems/HierarchyUtils.cpp.o.d"
   "CMakeFiles/MyGameEngine.dir/src/ecs/systems/RenderSystem.cpp.o"
   "CMakeFiles/MyGameEngine.dir/src/ecs/systems/RenderSystem.cpp.o.d"
   "CMakeFiles/MyGameEngine.dir/src/logger/logger.cpp.o"

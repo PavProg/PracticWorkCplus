@@ -201,6 +201,30 @@ src/ecs/systems/AnimationSystem.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyGameEngine.dir/build.make CMakeFiles/MyGameEngine.dir/src/ecs/systems/AnimationSystem.cpp.s
 .PHONY : src/ecs/systems/AnimationSystem.cpp.s
 
+src/ecs/systems/HierarchyUtils.o: src/ecs/systems/HierarchyUtils.cpp.o
+.PHONY : src/ecs/systems/HierarchyUtils.o
+
+# target to build an object file
+src/ecs/systems/HierarchyUtils.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyGameEngine.dir/build.make CMakeFiles/MyGameEngine.dir/src/ecs/systems/HierarchyUtils.cpp.o
+.PHONY : src/ecs/systems/HierarchyUtils.cpp.o
+
+src/ecs/systems/HierarchyUtils.i: src/ecs/systems/HierarchyUtils.cpp.i
+.PHONY : src/ecs/systems/HierarchyUtils.i
+
+# target to preprocess a source file
+src/ecs/systems/HierarchyUtils.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyGameEngine.dir/build.make CMakeFiles/MyGameEngine.dir/src/ecs/systems/HierarchyUtils.cpp.i
+.PHONY : src/ecs/systems/HierarchyUtils.cpp.i
+
+src/ecs/systems/HierarchyUtils.s: src/ecs/systems/HierarchyUtils.cpp.s
+.PHONY : src/ecs/systems/HierarchyUtils.s
+
+# target to generate assembly for a file
+src/ecs/systems/HierarchyUtils.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyGameEngine.dir/build.make CMakeFiles/MyGameEngine.dir/src/ecs/systems/HierarchyUtils.cpp.s
+.PHONY : src/ecs/systems/HierarchyUtils.cpp.s
+
 src/ecs/systems/RenderSystem.o: src/ecs/systems/RenderSystem.cpp.o
 .PHONY : src/ecs/systems/RenderSystem.o
 
@@ -435,6 +459,9 @@ help:
 	@echo "... src/ecs/systems/AnimationSystem.o"
 	@echo "... src/ecs/systems/AnimationSystem.i"
 	@echo "... src/ecs/systems/AnimationSystem.s"
+	@echo "... src/ecs/systems/HierarchyUtils.o"
+	@echo "... src/ecs/systems/HierarchyUtils.i"
+	@echo "... src/ecs/systems/HierarchyUtils.s"
 	@echo "... src/ecs/systems/RenderSystem.o"
 	@echo "... src/ecs/systems/RenderSystem.i"
 	@echo "... src/ecs/systems/RenderSystem.s"

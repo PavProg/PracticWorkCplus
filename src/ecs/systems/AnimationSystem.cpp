@@ -15,7 +15,6 @@ void AnimationSystem::Update(float deltaTime) {
 
     const auto& tags = m_world.GetAllComponents<Tag>();
 
-    Logger::Info("Animation loop started");
     for (const auto& [entity, tag] : tags) {
         if (!m_world.HasComponent<Transform>(entity)) {
             continue;
@@ -37,7 +36,9 @@ void AnimationSystem::Update(float deltaTime) {
         } else if (tag.name == "YellowSquare") {
             float pulse = 0.8f + 0.2f * std::sin(m_totalTime * 3.0f);
             transform.scale = glm::vec3(pulse, pulse, 1.0f);
+        } else if (tag.name == "GreenSquare"){
+            float angle = m_totalTime * 0.5f;
+            transform.rotation = glm::angleAxis(angle, glm::vec3(0.0f, 0.0f, 1.0f));
         }   // GreenSquare - точка отсчета в центре сцены
     }
-    Logger::Info("Animation loop finished");
 }

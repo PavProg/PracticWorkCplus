@@ -1160,4 +1160,6 @@ CMakeFiles/MyGameEngine.dir/src/application/application.cpp.o: \
   /usr/local/include/glm/gtc/epsilon.inl \
   /usr/local/include/glm/gtc/../vector_relational.hpp \
   /usr/local/include/glm/gtc/../common.hpp \
-  /Users/pavel/Desktop/WorkingProject/CplusWorks/AID/Practice1/src/ecs/components/Tag.hpp
+  /Users/pavel/Desktop/WorkingProject/CplusWorks/AID/Practice1/src/ecs/components/Tag.hpp \
+  /Users/pavel/Desktop/WorkingProject/CplusWorks/AID/Practice1/src/ecs/components/Hierarchy.hpp \
+  /Users/pavel/Desktop/WorkingProject/CplusWorks/AID/Practice1/src/ecs/systems/HierarchyUtils.hpp
