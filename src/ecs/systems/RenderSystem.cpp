@@ -38,14 +38,14 @@ void RenderSystem::Update() {
             case PrimitiveType::Square:   primType = "Square";   break;
             case PrimitiveType::Cube:     primType = "Cube";     break;
         }
-        Logger::Info("RenderSystem: Entity " + std::to_string(entity) +
-                     " [" + primType + "] color=(" +
-                     std::to_string(mesh.color.r) + "," +
-                     std::to_string(mesh.color.g) + "," +
-                     std::to_string(mesh.color.b) + "," +
-                     std::to_string(mesh.color.a) + ")" +
-                     " pos=(" + std::to_string(transform.position.x) + "," +
-                     std::to_string(transform.position.y) + "," +
-                     std::to_string(transform.position.z) + ")");
+        // Logger::Info("RenderSystem: Entity " + std::to_string(entity) +
+        //              " [" + primType + "] color=(" +
+        //              std::to_string(mesh.color.r) + "," +
+        //              std::to_string(mesh.color.g) + "," +
+        //              std::to_string(mesh.color.b) + "," +
+        //              std::to_string(mesh.color.a) + ")" +
+        //              " pos=(" + std::to_string(transform.position.x) + "," +
+        //              std::to_string(transform.position.y) + "," +
+        //              std::to_string(transform.position.z) + ")");
     }
 }

@@ -172,7 +172,6 @@ void Application::Run() {
         renderer->SetCamera(view, projection);
 
         if (animationSystem) {
-            Logger::Info("Calling animationSystem->Update");
             animationSystem->Update(deltaTime);
         } else {
             Logger::Info("animationSystem is NULL!");
