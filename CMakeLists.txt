@@ -4,16 +4,10 @@ project(MyGameEngine VERSION 1.0.0 LANGUAGES CXX C)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-
 include_directories(
-    ${CMAKE_CURRENT_SOURCE_DIR}/dependencies/include    # /Users/pavel/Desktop/WorkingProject/CplusWorks/AID/Practice1/dependencies/include #
+    ${CMAKE_CURRENT_SOURCE_DIR}/dependencies/include
     ${CMAKE_CURRENT_SOURCE_DIR}/src
 )
-
-find_package(PkgConfig QUIET)
-if(PKG_CONFIG_FOUND)
-    pkg_check_modules(GLFW QUIET glfw.3.4)
-endif()
 
 set(SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp
@@ -29,22 +23,65 @@ set(SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/src/ecs/systems/RenderSystem.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/ecs/systems/AnimationSystem.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/ecs/systems/HierarchyUtils.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/scene/SceneLoader.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/scene/ComponentRegistry.cpp
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES})
 
-target_include_directories(${PROJECT_NAME} PRIVATE /usr/local/include)
 
-# Линковка библиотек
-if(GLFW_FOUND)
-    target_link_libraries(${PROJECT_NAME} ${GLFW_LIBRARIES})
+if(APPLE)
+    target_include_directories(${PROJECT_NAME} PRIVATE /usr/local/include)
+
+    find_package(PkgConfig QUIET)
+    if(PKG_CONFIG_FOUND)
+        pkg_check_modules(GLFW QUIET glfw3)
+    endif()
+
+    if(GLFW_FOUND)
+        target_link_libraries(${PROJECT_NAME} PRIVATE ${GLFW_LIBRARIES})
+        target_link_directories(${PROJECT_NAME} PRIVATE ${GLFW_LIBRARY_DIRS})
+    else()
+        target_link_directories(${PROJECT_NAME} PRIVATE
+            ${CMAKE_CURRENT_SOURCE_DIR}/dependencies/library)
+        target_link_libraries(${PROJECT_NAME} PRIVATE glfw.3.4)
+    endif()
+
+    target_link_libraries(${PROJECT_NAME} PRIVATE
+        "-framework OpenGL"
+        "-framework Cocoa"
+        "-framework IOKit"
+    )
+
+elseif(WIN32)
+    # --- Windows (vcpkg + MSVC / MinGW) ---
+    find_package(glfw3          CONFIG REQUIRED)
+    find_package(glm            CONFIG REQUIRED)
+
+    target_link_libraries(${PROJECT_NAME} PRIVATE
+        glfw
+        glm::glm
+        opengl32
+        gdi32
+    )
+
 else()
-    target_link_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/dependencies/library)
-    target_link_libraries(${PROJECT_NAME} glfw.3.4)
+    find_package(glfw3  CONFIG REQUIRED)
+    find_package(glm    CONFIG REQUIRED)
+    find_package(OpenGL REQUIRED)
+
+    target_link_libraries(${PROJECT_NAME} PRIVATE
+        glfw
+        glm::glm
+        OpenGL::GL
+        dl
+        pthread
+    )
 endif()
 
-target_link_libraries(${PROJECT_NAME}
-    "-framework OpenGL"
-    "-framework Cocoa"
-    "-framework IOKit"
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+        "${CMAKE_SOURCE_DIR}/assets"
+        "$<TARGET_FILE_DIR:${PROJECT_NAME}>/assets"
+    COMMENT "Copying assets to build directory"
 )

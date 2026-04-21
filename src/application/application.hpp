@@ -5,6 +5,7 @@
 #include "render/IRenderAdapter.hpp"
 #include "ecs/systems/RenderSystem.hpp"
 #include "ecs/systems/AnimationSystem.hpp"
+#include "scene/SceneSettings.hpp"
 
 struct GLFWwindow;
 class StateManager;
@@ -19,8 +20,6 @@ class Application {
         void Shutdown();
 
     private:
-        void CreateTestScene(World& world);
-
         GLFWwindow* window;
         bool running;
         double lastFrameTime;
@@ -29,6 +28,8 @@ class Application {
         std::unique_ptr<World> world;
         std::unique_ptr<RenderSystem> renderSystem;
         std::unique_ptr<AnimationSystem> animationSystem;
+
+        SceneSettings m_sceneSettings;
 };
 
 #endif

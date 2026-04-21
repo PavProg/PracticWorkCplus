@@ -1,0 +1,57 @@
+# Build output
+
+build/
+out/
+bin/
+lib/
+Debug/
+Release/
+
+# Visual Studio / Rider / VSCode IDE
+.vs/
+.vscode/
+.idea/
+*.user
+*.suo
+*.opensdf
+*.sdf
+*.VC.db
+*.VC.VC.opendb
+CMakeUserPresets.json
+
+# CMake artefacts, если вдруг попали в корень
+CMakeCache.txt
+CMakeFiles/
+CMakeScripts/
+cmake_install.cmake
+Makefile
+compile_commands.json
+*.cmake
+!CMakeLists.txt
+!CMakePresets.json
+
+# Объектные файлы, библиотеки, бинарники
+*.obj
+*.o
+*.a
+*.lib
+*.exp
+*.pdb
+*.ilk
+*.exe
+*.out
+*.app
+
+*.dll
+
+# Логи и временные файлы
+*.log
+game.log
+*.tmp
+*.swp
+*~
+
+# OS-специфичный мусор
+.DS_Store
+Thumbs.db
+desktop.ini

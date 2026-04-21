@@ -17,6 +17,7 @@
 #include "ecs/systems/AnimationSystem.hpp"
 #include "ecs/components/Hierarchy.hpp"
 #include "ecs/systems/HierarchyUtils.hpp"
+#include "scene/SceneLoader.hpp"
 
 Application::Application() 
 : window(nullptr), running(false), lastFrameTime(0.0), stateManager(nullptr) {}
@@ -74,93 +75,11 @@ bool Application::Init(int width, int height, const char* title) {
     animationSystem = std::make_unique<AnimationSystem>(*world);
     Logger::Info("AnimationSystem created");
 
-    CreateTestScene(*world);
+    if (!SceneLoader::Load("assets/scenes/test_scene.json", *world, m_sceneSettings)) {
+        Logger::Error("Failed to load scene; using empty world");
+    }
 
     return true;
-}
-
-void Application::CreateTestScene(World& world) {
-    // Сущность 1 - красный треугольник
-    EntityId e1 = world.CreateEntity();
-    world.AddComponent<Transform>(e1, {
-        glm::vec3(-2.0f, 0.0f, 0.0f),
-        glm::quat(1.0f, 0.0f, 0.0f, 0.0f),
-        glm::vec3(1.0f, 1.0f, 1.0f)
-    });
-    world.AddComponent<MeshRenderer>(e1, {
-        PrimitiveType::Triangle,
-        glm::vec4(1.0f, 0.0f, 0.0f, 1.0f)
-    });
-    world.AddComponent<Tag>(e1, {"RedTriangle"});
-
-    // Сущность2 - зеленый квадрат в центре
-    EntityId e2 = world.CreateEntity();
-    world.AddComponent<Transform>(e2, {
-        glm::vec3(0.0f, 0.0f, 0.0f),
-        glm::quat(1.0f, 0.0f, 0.0f, 0.0f),
-        glm::vec3(1.0f, 1.0f, 1.0f)
-    });
-    world.AddComponent<MeshRenderer>(e2, {
-        PrimitiveType::Square,
-        glm::vec4(0.0f, 1.0f, 0.0f, 1.0f)
-    });
-    world.AddComponent<Tag>(e2, {"GreenSquare"});
-
-    //Сущность 3 - Синий треугольник справа
-    EntityId e3 = world.CreateEntity();
-    world.AddComponent<Transform>(e3, {
-        glm::vec3(2.0f, 0.0f, 0.0f),
-        glm::quat(1.0f, 0.0f, 0.0f, 0.0f),
-        glm::vec3(0.5f, 0.5f, 0.5f)
-    });
-    world.AddComponent<MeshRenderer>(e3, {
-        PrimitiveType::Triangle,
-        glm::vec4(0.0f, 0.0f, 1.0f, 1.0f)
-    });
-    world.AddComponent<Tag>(e3, {"BlueTriangle"});
-
-    //Сущность 4 - желтый квадрат сверху
-    EntityId e4 = world.CreateEntity();
-    world.AddComponent<Transform>(e4, {
-        glm::vec3(0.0f, 1.5f, 0.0f),
-        glm::quat(1.0f, 0.0f, 0.0f, 0.0f),
-        glm::vec3(0.8f, 0.8f, 1.0f)
-    });
-    world.AddComponent<MeshRenderer>(e4, {
-        PrimitiveType::Square,
-        glm::vec4(1.0f, 1.0f, 0.0f, 1.0f)
-    });
-    world.AddComponent<Tag>(e4, {"YellowSquare"});
-
-    // Далее реализация иерархии. По задумке "центр" - GreenSquare вокруг него будут кружится спутники при запуске анимации
-    // linkObj 1
-    EntityId linkObj1 = world.CreateEntity();
-    world.AddComponent<Transform>(linkObj1, {
-        glm::vec3(0.8f, 0.0f, 0.0f),
-        glm::quat(1.0f, 0.0f, 0.0f, 0.0f),
-        glm::vec3(0.3f, 0.3f, 0.3f)
-    });
-    world.AddComponent<MeshRenderer>(linkObj1, {
-        PrimitiveType::Triangle,
-        glm::vec4(1.0f, 0.5f, 0.0f, 1.0f)
-    });
-    world.AddComponent<Tag>(linkObj1, {"linkedObject1"});
-
-    // linkObj 2
-    EntityId linkObj2 = world.CreateEntity();
-    world.AddComponent<Transform>(linkObj2, {
-        glm::vec3(-0.8f, 0.0f, 0.0f),
-        glm::quat(1.0f, 0.0f, 0.0f, 0.0f),
-        glm::vec3(0.3f, 0.3f, 0.3f)
-    });
-    world.AddComponent<MeshRenderer>(linkObj2, {
-        PrimitiveType::Triangle,
-        glm::vec4(0.0f, 1.0f, 1.0f, 1.0f)
-    });
-    world.AddComponent<Tag>(linkObj2, {"linkedObject2"});
-
-    HierarchyUtils::SetParent(world, linkObj1, e2);
-    HierarchyUtils::SetParent(world, linkObj2, e2);
 }
 
 void Application::Run() {
@@ -186,19 +105,24 @@ void Application::Run() {
             ? static_cast<float>(fbWidth) / static_cast<float>(fbHeight)
             : 1.0f;
 
-        renderer->Clear(0.0f, 0.0f, 0.0f, 1.0f);
+        renderer->Clear(
+            m_sceneSettings.background.r,
+            m_sceneSettings.background.g,
+            m_sceneSettings.background.b,
+            m_sceneSettings.background.a
+        );
 
         glm::mat4 view = glm::lookAt(
-            glm::vec3(0.0f, 0.0f, 5.0f),    // Камера в мире
-            glm::vec3(0.0f, 0.0f, 0.0f),    // Куда смотреть (центр)
-            glm::vec3(0.0f, 1.0f, 0.0f)     // вектор вверх по y
+            m_sceneSettings.camera.position,
+            m_sceneSettings.camera.target,
+            m_sceneSettings.camera.up
         );
 
         glm::mat4 projection = glm::perspective(
-            glm::radians(45.0f),    // Угол обзора в радианах
+            glm::radians(m_sceneSettings.camera.fov),
             aspect,
-            0.1f,
-            100.f   // объекты ближе 0.1 и дальше 100 отсекаются
+            m_sceneSettings.camera.nearPlan,
+            m_sceneSettings.camera.farPlan
         );
 
         renderer->SetCamera(view, projection);
