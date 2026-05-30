@@ -30,6 +30,10 @@ class Application {
         std::unique_ptr<AnimationSystem> animationSystem;
 
         SceneSettings m_sceneSettings;
+
+        float m_simAccumulator = 0.0f;
+        float m_simSpeed = 1.0f;
+        static constexpr float SIM_STEP = 1.0f / 30.0f;
 };
 
 #endif

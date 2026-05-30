@@ -34,10 +34,19 @@ namespace {
 
 		if (j.contains("camera")) {
 			const json& c = j["camera"];
+
+			if (c.contains("projection")) {
+				std::string p = c["projection"].get<std::string>();
+				s.camera.projection = (p == "perspective")
+					? ProjectionType::Perspective
+					: ProjectionType::Orthographic;
+			}
+
 			if (c.contains("position")) s.camera.position = ReadVec3(c["position"], s.camera.position);
 			if (c.contains("target")) s.camera.target = ReadVec3(c["target"], s.camera.target);
 			if (c.contains("up")) s.camera.up = ReadVec3(c["up"], s.camera.up);
 			if (c.contains("fov")) s.camera.fov = c["fov"].get<float>();
+			if (c.contains("orthoSize")) s.camera.orthoSize = c["orthoSize"].get<float>();
 			if (c.contains("near")) s.camera.nearPlan = c["near"].get<float>();
 			if (c.contains("far")) s.camera.farPlan = c["far"].get<float>();
 		}

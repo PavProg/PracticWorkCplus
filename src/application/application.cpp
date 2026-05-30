@@ -84,19 +84,31 @@ bool Application::Init(int width, int height, const char* title) {
 
 void Application::Run() {
     Logger::Info("Entering main loop");
+
     lastFrameTime = glfwGetTime();
+    m_simAccumulator = 0.0f;
+
     while (running && !glfwWindowShouldClose(window)) {
         double currentTime = glfwGetTime();
-        float deltaTime = static_cast<float>(currentTime - lastFrameTime);
+        float realDelta = static_cast<float>(currentTime - lastFrameTime);
         lastFrameTime = currentTime;
+
+        // Защита от spiral of death
+        if (realDelta > 0.25f) realDelta = 0.25f;
 
         glfwPollEvents();
 
-        if (stateManager) {
-            stateManager->Update(deltaTime);
+        // Phase SIM
+        m_simAccumulator += realDelta * m_simSpeed;
+
+        while (m_simAccumulator >= SIM_STEP) {
+            if (stateManager) stateManager->Update(SIM_STEP);
+            if (animationSystem) animationSystem->Update(SIM_STEP);
+
+            m_simAccumulator -= SIM_STEP;
         }
 
-        // Настрока камеры для этого кадра
+        // Настройка рендера для этого кадра
         int fbWidth, fbHeight;
         glfwGetFramebufferSize(window, &fbWidth, &fbHeight);
         glViewport(0, 0, fbWidth, fbHeight);
@@ -118,20 +130,20 @@ void Application::Run() {
             m_sceneSettings.camera.up
         );
 
-        glm::mat4 projection = glm::perspective(
-            glm::radians(m_sceneSettings.camera.fov),
-            aspect,
-            m_sceneSettings.camera.nearPlan,
-            m_sceneSettings.camera.farPlan
-        );
+        glm::mat4 projection;
+        if (m_sceneSettings.camera.projection == ProjectionType::Orthographic) {
+            float halfH = m_sceneSettings.camera.orthoSize;
+            float halfW = halfH * aspect;
+            // ortho - это матрица, которая создает параллепипед с 4 аргументами: лева, права, вверх, низ, nearPlan, farPlan
+            projection = glm::ortho(-halfW, halfW, -halfH, halfH, m_sceneSettings.camera.nearPlan, m_sceneSettings.camera.farPlan);
+        }
+        else {
+            projection = glm::perspective(glm::radians(m_sceneSettings.camera.fov),
+                aspect,
+                m_sceneSettings.camera.nearPlan, m_sceneSettings.camera.farPlan); // (угол обзора, соотношение экрана, nearPlan, farPlan)
+        }
 
         renderer->SetCamera(view, projection);
-
-        if (animationSystem) {
-            animationSystem->Update(deltaTime);
-        } else {
-            Logger::Info("animationSystem is NULL!");
-        }
 
         // Отрисовка через Ecs
         if (renderSystem) {

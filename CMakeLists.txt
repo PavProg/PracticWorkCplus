@@ -25,6 +25,12 @@ set(SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/src/ecs/systems/HierarchyUtils.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/scene/SceneLoader.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/scene/ComponentRegistry.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/resources/ResourceManager.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/resources/MeshLoader.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/resources/TextureLoader.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/resources/ShaderLoader.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/resources/StbImage.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/resources/TinyObjLoader.cpp
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES})

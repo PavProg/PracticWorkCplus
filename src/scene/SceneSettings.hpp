@@ -3,13 +3,24 @@
 
 #include <glm/glm.hpp>
 
+enum class ProjectionType {
+	Perspective,
+	Orthographic
+};
+
 struct CameraSettings {
-	glm::vec3 position = glm::vec3(0.0f, 0.0f, 5.0f);
-	glm::vec3 target = glm::vec3(0.0f);
+	ProjectionType projection = ProjectionType::Orthographic;
+
+	glm::vec3 position = glm::vec3(0.0f, 0.0f, 20.0f);
+	glm::vec3 target = glm::vec3(0.0f, 0.0f, 0.0f);
 	glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
-	float fov = 45.0f;
 	float nearPlan = 0.1f;
-	float farPlan = 100.0f;
+	float farPlan = 200.0f;
+
+	float fov = 45.0f;
+
+	// Ортографическая камера
+	float orthoSize = 10.0f;
 };
 
 struct SceneSettings {
