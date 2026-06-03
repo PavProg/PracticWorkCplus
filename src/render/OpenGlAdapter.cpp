@@ -8,6 +8,8 @@
 #include "logger/logger.hpp"
 #include "glm/gtc/type_ptr.hpp"
 
+#include <cstddef>
+
 // Ф-ция для чтения файла
 static std::string ReadFile(const std::string& path) {
     std::ifstream file(path);
@@ -259,4 +261,49 @@ void OpenGLAdapter::DeleteShaders() {
         glDeleteProgram(m_shaderProgram);
         m_shaderProgram = 0;
     }
+}
+
+GPUMesh OpenGLAdapter::UploadMesh(const MeshData& data) {
+    GPUMesh m{};
+    m.indexCount = static_cast<int>(data.indices.size());
+
+    glGenVertexArrays(1, &m.vao);
+    glGenBuffers(1, &m.vbo);
+    glGenBuffers(1, &m.ebo);
+
+    glBindVertexArray(m.vao);
+
+    //VBO
+    glBindBuffer(GL_ARRAY_BUFFER, m.vbo);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * data.indices.size(), 
+        data.indices.data(), GL_STATIC_DRAW);
+
+    //EBO
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m.ebo);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, 
+        sizeof(std::uint32_t) * data.indices.size(), data.indices.data(), GL_STATIC_DRAW);
+
+    //Атрибуты
+    // Position - vec3
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex),
+        (void*)offsetof(Vertex, position)); // location, размер, тип, нормализация, шаг вершин, смещение внутри Vertex
+
+    // normal - vec3
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, normal));
+
+    // UV - vec3
+    glEnableVertexAttribArray(2);
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, uv));
+
+    glBindVertexArray(0);
+    return m;
+}
+
+void OpenGLAdapter::ReleaseMesh(GPUMesh& m) {
+    if (m.vao) glDeleteVertexArrays(1, &m.vao);
+    if (m.vbo) glDeleteBuffers(1, &m.vbo);
+    if (m.ebo) glDeleteBuffers(1, &m.ebo);
+    m = {};
 }

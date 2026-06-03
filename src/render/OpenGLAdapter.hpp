@@ -23,6 +23,9 @@ class OpenGLAdapter : public IRenderAdapter {
         void SetCamera(const glm::mat4& view, const glm::mat4& projection) override;
 
         void ReloadShaders() override;
+
+        GPUMesh UploadMesh(const MeshData& data) override;
+        void ReleaseMesh(GPUMesh& mesh) override;
     private:
         GLFWwindow* m_window;
 

@@ -3,6 +3,7 @@
 
 #include "glm/glm.hpp"
 #include "ecs/components/MeshRenderer.hpp"
+#include "resources/Mesh.hpp"
 
 class IRenderAdapter {
 public:
