@@ -26,6 +26,15 @@ class OpenGLAdapter : public IRenderAdapter {
 
         GPUMesh UploadMesh(const MeshData& data) override;
         void ReleaseMesh(GPUMesh& mesh) override;
+
+        GPUTexture UploadTexture(const TextureData& data) override;
+        void ReleaseTexture(GPUTexture& tex) override;
+
+        GPUShader CompileShader(const std::string& vertexSrc, const std::string& fragmnetSrc) override;
+        void ReleaseShader(GPUShader& shader) override;
+
+        void DrawLoadedMesh(const GPUMesh& mesh, const GPUTexture& texture, const GPUShader& shader,
+            const glm::mat4& model, const glm::vec4& tint) override;
     private:
         GLFWwindow* m_window;
 

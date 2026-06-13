@@ -5,11 +5,11 @@
 #include <cstdint>
 #include <glm/glm.hpp>
 
-// Одна вершина модели
+// POD структура (Plain Old Data). CPU для hr, GPU для рендера.
 struct Vertex {
 	glm::vec3 position;
 	glm::vec3 normal;
-	glm::vec3 uv;
+	glm::vec2 uv;
 };
 
 struct MeshData {

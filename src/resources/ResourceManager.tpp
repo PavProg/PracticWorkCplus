@@ -3,6 +3,7 @@
 
 #include "logger/logger.hpp"
 
+// instantiation шаблона
 template<typename T>
 std::shared_ptr<Resource<T>> ResourceManager::Load(const std::string& path) {
 	std::type_index typeKey = std::type_index(typeid(T));

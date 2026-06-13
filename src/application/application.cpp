@@ -2,13 +2,16 @@
 #include <GLFW/glfw3.h>
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
+
 #include "application.hpp"
 #include "logger/logger.hpp"
+
 #include "states/StateManager.hpp"
 #include "states/MenuState.hpp"
 #include "states/PlayState.hpp"
 #include "states/PauseState.hpp"
 #include "render/OpenGLAdapter.hpp"
+
 #include "ecs/World.hpp"
 #include "ecs/components/Transform.hpp"
 #include "ecs/components/Tag.hpp"
@@ -17,7 +20,14 @@
 #include "ecs/systems/AnimationSystem.hpp"
 #include "ecs/components/Hierarchy.hpp"
 #include "ecs/systems/HierarchyUtils.hpp"
+
 #include "scene/SceneLoader.hpp"
+
+#include "resources/ResourceManager.hpp"
+#include "resources/Mesh.hpp"
+#include "resources/Texture.hpp"
+#include "resources/ShaderProgram.hpp"
+
 
 Application::Application() 
 : window(nullptr), running(false), lastFrameTime(0.0), stateManager(nullptr) {}
@@ -68,6 +78,9 @@ bool Application::Init(int width, int height, const char* title) {
         Logger::Error("Failed to initialize render adapter");
         return false;
     }
+
+    resourceManager = std::make_unique<ResourceManager>(*renderer);
+
     world = std::make_unique<World>();
     Logger::Info("Build Marker v2: creating systems");
     renderSystem = std::make_unique<RenderSystem>(*world, *renderer);
@@ -78,6 +91,8 @@ bool Application::Init(int width, int height, const char* title) {
     if (!SceneLoader::Load("assets/scenes/test_scene.json", *world, m_sceneSettings)) {
         Logger::Error("Failed to load scene; using empty world");
     }
+
+    CreateDemoLoadedEntities();
 
     return true;
 }
@@ -159,12 +174,55 @@ void Application::Run() {
     Logger::Info("Exited main loop");
 }
 
+void Application::CreateDemoLoadedEntities() {
+    // Загружаем 3 типа ресурсов
+    auto mesh = resourceManager->Load<Mesh>("assets/models/quad.obj");
+    auto texture = resourceManager->Load<Texture>("assets/textures/test.png");
+    auto shader = resourceManager->Load<ShaderProgram>("assets/shaders/model");
+
+    if (!mesh || !texture || !shader) {
+        Logger::Error("Demo: one of the resources failed to load");
+        return;
+    }
+
+    // Спавним 3 сущности
+    for (int i = 0; i < 3; ++i) {
+        EntityId e = world->CreateEntity();
+
+        Transform t{};
+        t.position = glm::vec3(-3.0f + i * 3.0f, -3.0f, 0.0f);
+        t.rotation = glm::quat(1.0f, 0.0f, 0.0f, 0.0f);
+        t.scale = glm::vec3(2.0f);
+        world->AddComponent<Transform>(e, t);
+
+        MeshRenderer mr{};
+        mr.primitiveType = PrimitiveType::None;
+        mr.mesh = mesh;
+        mr.texture = texture;
+        mr.shader = shader;
+        mr.tint = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+        world->AddComponent<MeshRenderer>(e, mr);
+
+        world->AddComponent<Tag>(e, { "LoadedQuad_" + std::to_string(i) });
+    }
+
+    Logger::Info("Demo: 3 entities sharing one mesh + one texture + one shader");
+}
+
 void Application::Shutdown() {
     Logger::Info("Shutting down application");
+
+    animationSystem.reset();
+    renderSystem.reset();
+    world.reset();
+
+    resourceManager.reset();
+
     if (renderer) {
         renderer->Shutdown();
         renderer.reset();
     }
+
     stateManager.reset();
     if (window) {
         glfwDestroyWindow(window);
@@ -172,5 +230,6 @@ void Application::Shutdown() {
     }
     glfwTerminate();
     running = false;
+
     Logger::ShutDown();
 }

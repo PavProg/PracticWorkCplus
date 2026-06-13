@@ -50,7 +50,7 @@ glm::mat4 RenderSystem::ComputeWorldMatrix(EntityId entity, int depth) {
 void RenderSystem::Update() {
     const auto& meshRenderers = m_world.GetAllComponents<MeshRenderer>();
 
-    for (const auto& [entity, mesh] : meshRenderers) {
+    for (const auto& [entity, mr] : meshRenderers) {
         if (!m_world.HasComponent<Transform>(entity)) {
             Logger::Warning("Entity " + std::to_string(entity) +
                             " has MeshRenderer but no Transform, skipping");
@@ -60,6 +60,17 @@ void RenderSystem::Update() {
         // Если у сущности нет родителя - ф-ция вернет локальную матрицу
         glm::mat4 worldMatrix = ComputeWorldMatrix(entity);
 
-        m_renderer.DrawMesh(worldMatrix, mesh.primitiveType, mesh.color);
+        if (mr.mesh && mr.shader && mr.texture) {
+            m_renderer.DrawLoadedMesh(
+                mr.mesh->data.gpu,
+                mr.texture->data.gpu,
+                mr.shader->data.gpu,
+                worldMatrix,
+                mr.tint
+            );
+        }
+        else {
+            m_renderer.DrawMesh(worldMatrix, mr.primitiveType, mr.color);
+        }
     }
 }

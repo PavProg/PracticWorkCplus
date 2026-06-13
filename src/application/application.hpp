@@ -6,6 +6,7 @@
 #include "ecs/systems/RenderSystem.hpp"
 #include "ecs/systems/AnimationSystem.hpp"
 #include "scene/SceneSettings.hpp"
+#include "resources/ResourceManager.hpp"
 
 struct GLFWwindow;
 class StateManager;
@@ -28,6 +29,10 @@ class Application {
         std::unique_ptr<World> world;
         std::unique_ptr<RenderSystem> renderSystem;
         std::unique_ptr<AnimationSystem> animationSystem;
+
+        std::unique_ptr<ResourceManager> resourceManager;
+
+        void CreateDemoLoadedEntities();
 
         SceneSettings m_sceneSettings;
 

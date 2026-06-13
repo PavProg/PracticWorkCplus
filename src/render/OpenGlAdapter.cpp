@@ -263,7 +263,7 @@ void OpenGLAdapter::DeleteShaders() {
     }
 }
 
-GPUMesh OpenGLAdapter::UploadMesh(const MeshData& data) {
+GPUMesh OpenGLAdapter::UploadMesh(const MeshData& data) {     // def upload_texture(data) -> GPUTexture:
     GPUMesh m{};
     m.indexCount = static_cast<int>(data.indices.size());
 
@@ -306,4 +306,120 @@ void OpenGLAdapter::ReleaseMesh(GPUMesh& m) {
     if (m.vbo) glDeleteBuffers(1, &m.vbo);
     if (m.ebo) glDeleteBuffers(1, &m.ebo);
     m = {};
+}
+
+
+GPUTexture OpenGLAdapter::UploadTexture(const TextureData& d) {
+    GPUTexture t{};
+    glGenTextures(1, &t.textureId);
+    glBindTexture(GL_TEXTURE_2D, t.textureId);
+
+    GLenum wrap = (d.wrap == TextureWrap::ClampToEdge) ? GL_CLAMP_TO_EDGE : GL_REPEAT;
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrap);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrap);
+
+    GLenum filter = (d.filter == TextureFilter::Linear) ? GL_LINEAR : GL_NEAREST;
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, filter);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter);
+
+    GLenum format = (d.channels == 4) ? GL_RGBA : GL_RGB;
+
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+
+    glTexImage2D(GL_TEXTURE_2D, 0, format, d.width, d.height, 0, format, GL_UNSIGNED_BYTE, d.pixels.data());
+
+    glBindTexture(GL_TEXTURE_2D, 0);
+    return t;
+}
+
+void OpenGLAdapter::ReleaseTexture(GPUTexture& t) {
+    if (t.textureId) glDeleteTextures(1, &t.textureId);
+    t = {};
+}
+
+GPUShader OpenGLAdapter::CompileShader(const std::string& vsSrc, const std::string& fsSrc) {
+    auto compile = [](GLenum type, const std::string& src) -> GLuint {
+        GLuint sh = glCreateShader(type);
+        const char* srcPtr = src.c_str();
+        glShaderSource(sh, 1, &srcPtr, nullptr);
+        glCompileShader(sh);
+
+        GLint ok = 0;
+        glGetShaderiv(sh, GL_COMPILE_STATUS, &ok);
+        if (!ok) {
+            char log[1024];
+            glGetShaderInfoLog(sh, sizeof(log), nullptr, log);
+            Logger::Error(std::string("Shader compile error: ") + log);
+            glDeleteShader(sh);
+            return 0;
+        }
+        return sh;
+    };
+
+    GLuint vs = compile(GL_VERTEX_SHADER, vsSrc);
+    GLuint fs = compile(GL_FRAGMENT_SHADER, fsSrc);
+    if (vs == 0 || fs == 0) {
+        if (vs) glDeleteShader(vs);
+        if (fs) glDeleteShader(fs);
+        return {};
+    }
+
+    GLuint program = glCreateProgram();
+    glAttachShader(program, vs);
+    glAttachShader(program, fs);
+    glLinkProgram(program);
+    
+    GLint linked = 0;
+    glGetProgramiv(program, GL_LINK_STATUS, &linked);
+    if (!linked) {
+        char log[1024];
+        glGetProgramInfoLog(program, sizeof(log), nullptr, log);
+        Logger::Error(std::string("Shader link error: ") + log);
+        glDeleteShader(vs);
+        glDeleteShader(fs);
+        glDeleteShader(program);
+        return {};
+    }
+
+    // После линковки в program удалить шейдеры
+    glDeleteShader(vs);
+    glDeleteShader(fs);
+
+    GPUShader gpu;
+    gpu.programId = program;
+    return gpu;
+}
+
+void OpenGLAdapter::ReleaseShader(GPUShader& s) {
+    if (s.programId) glDeleteShader(s.programId);
+    s = {};
+}
+
+// mvp-matrix, color, size - uniform
+void OpenGLAdapter::DrawLoadedMesh(const GPUMesh& mesh, const GPUTexture& tex, const GPUShader& shader, const glm::mat4& model, const glm::vec4& tint) {
+    glUseProgram(shader.programId);
+
+    glm::mat4 mvp = m_projectionMatrix * m_viewMatrix * model;
+
+    // Считаем итоговую матрицу MVP и передаем в шейдер
+    // проекция * вид * модель
+    GLint locMVP = glGetUniformLocation(shader.programId, "u_MVP");
+    GLint locTint = glGetUniformLocation(shader.programId, "u_Tint");
+    GLint locTex = glGetUniformLocation(shader.programId, "u_Texture");
+
+    if (locMVP >= 0) glUniformMatrix4fv(locMVP, 1, GL_FALSE, &mvp[0][0]);
+    if (locTint >= 0) glUniform4fv(locTint, 1, &tint[0]);
+
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, tex.textureId);
+    if (locTex >= 0) glUniform1i(locTex, 0);
+
+    glBindVertexArray(mesh.vao);
+
+    glDrawElements(GL_TRIANGLES, mesh.indexCount, GL_UNSIGNED_INT, nullptr);
+
+    // развязываем
+    glBindVertexArray(0);
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glUseProgram(0);
 }

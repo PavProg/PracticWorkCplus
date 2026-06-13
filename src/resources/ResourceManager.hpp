@@ -10,6 +10,8 @@
 
 class IRenderAdapter;
 
+// Если ресурс жив в кэще - возвращаем его компонентам (cache hit). Если нет - вызываем LoadImpl -> положить в кэш -> вернуть (cache miss)
+
 class ResourceManager {
 public:
     explicit ResourceManager(IRenderAdapter& renderer);
@@ -28,7 +30,7 @@ private:
 
     std::unordered_map<
         std::type_index,
-        std::unordered_map<std::string, std::weak_ptr<void>>
+        std::unordered_map<std::string, std::weak_ptr<void>>    // weak_ptr<void> - стирание типа = unique_ptr<void, deleter>
     > m_caches;
 
     template<typename T>

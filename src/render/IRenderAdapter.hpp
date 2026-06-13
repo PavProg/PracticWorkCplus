@@ -4,6 +4,8 @@
 #include "glm/glm.hpp"
 #include "ecs/components/MeshRenderer.hpp"
 #include "resources/Mesh.hpp"
+#include "resources/Texture.hpp"
+#include "resources/ShaderProgram.hpp"
 
 class IRenderAdapter {
 public:
@@ -19,6 +21,18 @@ public:
     virtual void SetCamera(const glm::mat4& view, const glm::mat4& projection) = 0;
 
     virtual void ReloadShaders() = 0;
+
+    virtual GPUMesh UploadMesh(const MeshData& data) = 0;
+    virtual void ReleaseMesh(GPUMesh& mesh) = 0;
+
+    virtual GPUTexture UploadTexture(const TextureData& data) = 0;
+    virtual void ReleaseTexture(GPUTexture& tex) = 0;
+
+    virtual GPUShader CompileShader(const std::string& vertexSrc, const std::string& fragmentSrc) = 0;
+    virtual void ReleaseShader(GPUShader& shader) = 0;
+
+    virtual void DrawLoadedMesh(const GPUMesh& mesh, const GPUTexture& texture, const GPUShader& shader, 
+        const glm::mat4& model, const glm::vec4& tint) = 0;
 };
 
 #endif
