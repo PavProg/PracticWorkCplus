@@ -37,6 +37,9 @@ Application::~Application() {
 }
 
 bool Application::Init(int width, int height, const char* title) {
+
+    Logger::Init("game.log");
+
     if (!glfwInit()) {
         Logger::Error("Failed to initialize GLFW");
         return false;
@@ -50,6 +53,7 @@ bool Application::Init(int width, int height, const char* title) {
     #endif
 
     window = glfwCreateWindow(width, height, title, nullptr, nullptr);
+
     if (!window) {
         Logger::Error("Failed to create GLFW window");
         glfwTerminate();
@@ -66,7 +70,6 @@ bool Application::Init(int width, int height, const char* title) {
     }
 
     running = true;
-    Logger::Init("game.log");
     Logger::Info("Application initialized");
 
     stateManager = std::make_unique<StateManager>();

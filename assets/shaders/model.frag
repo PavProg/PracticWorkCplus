@@ -1,6 +1,6 @@
 #version 330 core
 
-in vec3 vUV;
+in vec2 vUV;
 
 uniform sampler2D u_Texture;
 uniform vec4 u_Tint;

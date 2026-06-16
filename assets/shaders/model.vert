@@ -6,7 +6,7 @@ layout(location = 2) in vec2 aUV;
 
 uniform mat4 u_MVP;
 
-out vec3 vUV;
+out vec2 vUV;
 
 void main() {
 	gl_Position = u_MVP * vec4(aPos, 1.0);

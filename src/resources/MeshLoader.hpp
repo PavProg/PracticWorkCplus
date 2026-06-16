@@ -7,6 +7,8 @@
 #include "Resource.hpp"
 #include "Mesh.hpp"
 
+class IRenderAdapter;
+
 namespace MeshLoader {
 	std::shared_ptr<Resource<Mesh>> Load(const std::string& path, IRenderAdapter& renderer);
 }
