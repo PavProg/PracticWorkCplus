@@ -193,33 +193,22 @@ bool OpenGLAdapter::LoadShaders() {
         Logger::Warning("Shader isnt found. Using fallback shaders");
         vertexSrc = R"(
             #version 330 core
+            layout (location = 0) in vec3 aPos;
 
-            layout(location = 0) in vec3 aPos;
-            layout(location = 1) in vec3 aNormal;
-            layout(location = 2) in vec2 aUV;
-
-            uniform mat4 u_MVP;
-
-            out vec2 vUV;
+            uniform mat4 uModel;
+            uniform mat4 uView;
+            uniform mat4 uProjection;
 
             void main() {
-	            gl_Position = u_MVP * vec4(aPos, 1.0);
-	            vUV = aUV;
+                gl_Position = uProjection * uView * uModel * vec4(aPos, 1.0);
             }
         )";
         fragmentSrc = R"(
             #version 330 core
-
-            in vec2 vUV;
-
-            uniform sampler2D u_Texture;
-            uniform vec4 u_Tint;
-
+            uniform vec4 uColor;
             out vec4 FragColor;
-
             void main() {
-	            vec4 texColor = texture(u_Texture, vUV);
-	            FragColor = texColor * u_Tint;
+                FragColor = uColor;
             }
         )";
     }

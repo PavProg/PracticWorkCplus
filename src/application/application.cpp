@@ -116,6 +116,15 @@ void Application::Run() {
 
         glfwPollEvents();
 
+        m_hotReloadAccumulator += realDelta;
+        if (m_hotReloadAccumulator >= HOT_RELOAD_INTERVAL) {
+            m_hotReloadAccumulator = 0.0f;
+            if (resourceManager) {
+                resourceManager->ReloadModifiedShaders();
+                resourceManager->ReloadModifiedTextures();
+            }
+        }
+
         // Phase SIM
         m_simAccumulator += realDelta * m_simSpeed;
 

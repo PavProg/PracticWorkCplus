@@ -39,6 +39,9 @@ class Application {
         float m_simAccumulator = 0.0f;
         float m_simSpeed = 1.0f;
         static constexpr float SIM_STEP = 1.0f / 30.0f;
+
+        float m_hotReloadAccumulator = 0.0f;
+        static constexpr float HOT_RELOAD_INTERVAL = 0.5f;
 };
 
 #endif

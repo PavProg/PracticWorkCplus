@@ -25,6 +25,8 @@ public:
 
     IRenderAdapter& GetRenderer() { return m_renderer; }
 
+    void ReloadModifiedShaders();
+    void ReloadModifiedTextures();
 private:
     IRenderAdapter& m_renderer;
 
