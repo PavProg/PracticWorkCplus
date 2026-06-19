@@ -7,8 +7,6 @@
 #include <sstream>
 #include <fstream>
 
-#include "stb/stb_image.h"
-
 namespace {
 	std::string ReadFile(const std::string& path) {
 		std::ifstream f(path);
@@ -106,45 +104,5 @@ void ResourceManager::ReloadModifiedShaders() {
 		res->lastModified = current;
 
 		Logger::Info("HotReload: reloaded shader " + res->path);
-	}
-}
-
-void ResourceManager::ReloadModifiedTextures() {
-	auto typeIt = m_caches.find(std::type_index(typeid(Texture)));
-	if (typeIt == m_caches.end()) return;
-
-	for (auto& [path, weak] : typeIt->second) {
-		auto alive = weak.lock();
-		if (!alive) continue;
-		auto res = std::static_pointer_cast<Resource<Texture>>(alive);
-
-		std::error_code ec;
-		auto current = std::filesystem::last_write_time(res->path, ec);
-		if (ec || current <= res->lastModified) continue;
-
-		stbi_set_flip_vertically_on_load(true);
-		int w, h, ch;
-		unsigned char* pixels = stbi_load(res->path.c_str(), &w, &h, &ch, 0);
-		if (!pixels) {
-			Logger::Warning("HotReload: cannot read texture " + res->path);
-			res->lastModified = current;
-			continue;
-		}
-
-		TextureData nd;
-		nd.width = w; nd.height = h; nd.channels = ch;
-		nd.pixels.assign(pixels, pixels + (w * h * ch));
-		nd.filter = res->data.cpuData.filter;
-		nd.wrap = res->data.cpuData.wrap;
-		stbi_image_free(pixels);
-
-		GPUTexture newGpu = m_renderer.UploadTexture(nd);
-
-		m_renderer.ReleaseTexture(res->data.gpu);
-		res->data.cpuData = std::move(nd);
-		res->data.gpu = newGpu;
-		res->lastModified = current;
-
-		Logger::Info("HotReload: reloaded texture " + res->path);
 	}
 }

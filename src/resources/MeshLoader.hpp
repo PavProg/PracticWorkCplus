@@ -11,6 +11,8 @@ class IRenderAdapter;
 
 namespace MeshLoader {
 	std::shared_ptr<Resource<Mesh>> Load(const std::string& path, IRenderAdapter& renderer);
+
+	bool ParseToData(const std::string& path, MeshData& out);
 }
 
 #endif

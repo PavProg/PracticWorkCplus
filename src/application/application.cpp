@@ -84,6 +84,9 @@ bool Application::Init(int width, int height, const char* title) {
 
     resourceManager = std::make_unique<ResourceManager>(*renderer);
 
+    resourceManager->InitPlaceholders();
+    resourceManager->StartAsync(2);
+
     world = std::make_unique<World>();
     Logger::Info("Build Marker v2: creating systems");
     renderSystem = std::make_unique<RenderSystem>(*world, *renderer);
@@ -115,6 +118,8 @@ void Application::Run() {
         if (realDelta > 0.25f) realDelta = 0.25f;
 
         glfwPollEvents();
+
+        if (resourceManager) resourceManager->PumpUploads();
 
         m_hotReloadAccumulator += realDelta;
         if (m_hotReloadAccumulator >= HOT_RELOAD_INTERVAL) {
@@ -188,8 +193,8 @@ void Application::Run() {
 
 void Application::CreateDemoLoadedEntities() {
     // Загружаем 3 типа ресурсов
-    auto mesh = resourceManager->Load<Mesh>("assets/models/quad.obj");
-    auto texture = resourceManager->Load<Texture>("assets/textures/test.png");
+    auto mesh = resourceManager->LoadAsync<Mesh>("assets/models/quad.obj");
+    auto texture = resourceManager->LoadAsync<Texture>("assets/textures/test.png");
     auto shader = resourceManager->Load<ShaderProgram>("assets/shaders/model");
 
     if (!mesh || !texture || !shader) {
@@ -224,12 +229,18 @@ void Application::CreateDemoLoadedEntities() {
 void Application::Shutdown() {
     Logger::Info("Shutting down application");
 
+    // 1. Сначала потоки
+    if (resourceManager) resourceManager->StopAsync();
+
+    // 2. ECS
     animationSystem.reset();
     renderSystem.reset();
     world.reset();
 
+    // 3. Менеджер
     resourceManager.reset();
 
+    // 4. Рендер
     if (renderer) {
         renderer->Shutdown();
         renderer.reset();

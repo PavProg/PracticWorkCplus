@@ -11,6 +11,8 @@ class IRenderAdapter;
 
 namespace TextureLoader {
 	std::shared_ptr<Resource<Texture>> Load(const std::string& path, IRenderAdapter& renderer);
+
+	bool ParseToData(const std::string& path, TextureData& out);
 }
 
 #endif
