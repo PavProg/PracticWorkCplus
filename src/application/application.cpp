@@ -227,7 +227,7 @@ void Application::CreateDemoLoadedEntities() {
 }
 
 void Application::Shutdown() {
-    Logger::Info("Shutting down application");
+    Logger::Warning("Shutting down application");
 
     // 1. Сначала потоки
     if (resourceManager) resourceManager->StopAsync();
